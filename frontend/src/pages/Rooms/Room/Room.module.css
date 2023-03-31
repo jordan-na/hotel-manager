@@ -1,0 +1,35 @@
+.room-page {
+   margin: 2.7rem auto 0 auto;
+   max-width: 66rem;
+   width: 100%;
+}
+
+.hotel-image {
+   width: 100%;
+   height: 25rem;
+   object-fit: cover;
+   object-position: center;
+   border-radius: 0.5rem;
+}
+
+.room-content {
+   display: grid;
+   grid-template-columns: 1.275fr 1fr;
+   grid-template-rows: 1fr 1.5fr;
+   gap: 2rem;
+   margin-top: 3rem;
+}
+
+.details {
+   display: flex;
+   flex-direction: column;
+   gap: 2.75rem;
+   grid-row: 1/3;
+}
+
+.amenities-issues-container {
+   grid-column: 1/3;
+   display: grid;
+   grid-template-columns: 1.375fr 1fr;
+   column-gap: 2rem;
+}

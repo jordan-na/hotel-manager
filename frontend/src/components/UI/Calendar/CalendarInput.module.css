@@ -1,0 +1,22 @@
+.calendar {
+   position: absolute;
+   background-color: #fff;
+   left: 50%;
+   top: 110%;
+   border-radius: 0.7rem;
+   border: 2px solid #E6E8EB;
+   transform: translateX(-50%) scale(0.9);
+   overflow: hidden;
+   opacity: 0;
+   transform-origin: top center;
+   transition: 0.15s;
+   pointer-events: none;
+   z-index: 10;
+   height: auto;
+}
+
+.calendar.show {
+   transform: translateX(-50%) scale(1);
+   opacity: 1;
+   pointer-events: all;
+}

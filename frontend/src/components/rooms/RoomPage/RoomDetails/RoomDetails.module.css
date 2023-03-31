@@ -1,0 +1,6 @@
+.details {
+   display: flex;
+   flex-direction: column;
+   gap: 2.75rem;
+   grid-row: 1/3;
+}

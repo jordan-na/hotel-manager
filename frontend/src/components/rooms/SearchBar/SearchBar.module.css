@@ -1,0 +1,147 @@
+.search-bar-container {
+   height: 100%;
+   width: 100%;
+}
+
+.search-bar {
+   align-self: center;
+   width: min-content;
+   display: flex;
+   align-items: center;
+   background-color: #F1F3F5;
+   padding: 1.2rem 1.5rem;
+   border-radius: 20px;
+   width: 24.5rem;
+   cursor: pointer;
+   transition: 0.3s;
+   z-index: 4;
+   position: sticky;
+}
+
+.search-bar:hover {
+   transform: translateY(-2px);
+   box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 7px 0px;
+}
+
+.search-bar.fade-out {
+   animation: fade-out 0.15s linear forwards;
+}
+
+.search-bar.fade-in {
+   animation: fade-in 0.15s linear forwards;
+}
+
+@keyframes fade-out {
+   0% {
+      transform: scale(1) translateY(-2px);
+      opacity: 1;
+   } 100% {
+      transform: scale(1.3) translateY(25px);
+      opacity: 0;
+      pointer-events: none;
+   }
+}
+
+@keyframes fade-in {
+   0% {
+      transform: scale(1.3) translateY(25px);
+      opacity: 0;
+      pointer-events: none;
+   } 100% {
+      transform: scale(1) translateY(-2px);
+      opacity: 1;
+   }
+}
+
+.search-bar input {
+   background: none;
+   border: none;
+   outline: none;
+   font-size: 1.1rem;
+   flex-grow: 1;
+   pointer-events: none;
+}
+
+.full-search-bar {
+   position: fixed;
+   width: 100%;
+   height: 9rem;
+   top: 76px;
+   left: 0;
+   z-index: 6;
+   background-color: #fff;
+   transform: translateY(calc(-100% - 76px));
+   transition: 0.3s;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.full-search-bar.show {
+   transform: translateY(0);
+}
+
+.overlay {
+   width: 100vw;
+   height: 100vw;
+   position: fixed;
+   top: 0;
+   left: 0;
+   background-color: rgba(0, 0, 0, 0.25);
+   animation: show-overlay 0.3s forwards;
+   z-index: 2;
+}
+
+@keyframes show-overlay {
+   0% {
+      transform: translateY(0%);
+   } 100% {
+      transform: translateY(9rem);
+   }
+}
+
+.fixed-search-bar {
+   position: fixed;
+   top: 76px;
+   width: 100%;
+   left: 0;
+   height: 3.2rem;
+   background-color: #fff;
+   z-index: 5;
+   border-bottom: 2px solid #E6E8EB;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer;
+   letter-spacing: 2px;
+   gap: 20px;
+   transform: translateY(-100%);
+}
+
+.fixed-search-bar:hover {
+   background-color: #eee;
+}
+
+.fixed-search-bar.slide-down {
+   animation: slide-down 0.2s linear forwards;
+}
+
+.fixed-search-bar.slide-up {
+   animation: slide-up 0.2s linear forwards;
+}
+
+@keyframes slide-down {
+   0% {
+      transform: translateY(-100%);
+   } 100% {
+      transform: translateY(0%);
+   }
+}
+
+@keyframes slide-up {
+   0% {
+      transform: translateY(0%);
+   } 100% {
+      transform: translateY(-100%);
+   }
+}

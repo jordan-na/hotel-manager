@@ -1,0 +1,27 @@
+.details-section {
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+   position: relative;
+}
+
+.label-section {
+   display: flex;
+   align-items: center;
+   cursor: pointer;
+}
+
+.arrow {
+   transform: translateY(1px);
+   transition: 0.2s;
+}
+
+.arrow.flip {
+   transform: rotate(180deg) translateY(1px);
+}
+
+.details {
+   display: flex;
+   flex-direction: column;
+   gap: 0.9rem;
+}

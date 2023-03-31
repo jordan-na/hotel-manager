@@ -1,0 +1,65 @@
+.search-form {
+   height: 4rem;
+   border-radius: 2rem;
+   border: 2px solid #E6E8EB;
+   display: flex;
+   align-items: stretch;
+   position: relative;
+}
+
+.active {
+   background-color: #F1F3F5;
+}
+
+.button {
+   height: 3rem;
+   border-radius: 1.5rem;
+   display: flex;
+   align-items: center;
+   gap: 0.5rem;
+   align-self: center;
+   border: none;
+   margin-right: 0.5rem;
+   cursor: pointer;
+   padding: 0 1rem;
+   font-size: 1rem;
+   transition: 0.1s;
+}
+
+.clear-button {
+   background-color: #FFE5F8;
+   color: #F31260;
+}
+
+.clear-button:hover {
+   background-color: #F31260;
+   color: #fff;
+}
+
+.clear-button.disable:hover {
+   background-color: #FFE5F8;
+   color: #F31260;}
+
+.disable {
+   cursor: default;
+   opacity: 0.5;
+}
+
+.search-button {
+   background-color: #CEE4FE;
+   color: #0072F5;
+}
+
+.search-button.disable:hover {
+   background-color: #CEE4FE;
+   color: #0072F5;
+}
+
+.search-button:hover {
+   background-color: #0072F5;
+   color: #fff;
+}
+
+.search-icon {
+   height: 1rem;
+}

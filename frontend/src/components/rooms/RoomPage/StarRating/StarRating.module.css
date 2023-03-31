@@ -1,0 +1,18 @@
+.star-rating {
+   display: flex;
+   align-items: center;
+}
+
+.help-button {
+   border: none;
+   padding: none;
+   background: none;
+   cursor: pointer;
+   transform: translateY(1px);
+   margin-left: 1rem;
+   outline: none;
+}
+
+.help-text {
+   padding: 1rem;
+}

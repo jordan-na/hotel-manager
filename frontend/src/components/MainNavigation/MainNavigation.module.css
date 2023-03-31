@@ -1,0 +1,92 @@
+.navbar {
+   position: sticky;
+   z-index: 1000000 !important;
+   background-color: #fff !important;
+   box-shadow: none;
+   top: 0;
+}
+
+.navbar::after {
+   content: "";
+   position: absolute;
+   bottom: -2px;
+   display: block;
+   width: 100%;
+   left: 0;
+   height: 2px;
+   background-color: #E6E8EB;
+   z-index: 100000000;
+}
+
+.nav {
+   display: flex;
+   position: relative;
+   gap: 2rem;
+   height: 100%;
+}
+
+.nav::after {
+   content: "";
+   position: absolute;
+   width: 85px;
+   display: block;
+   height: 4px;
+   border-radius: 2px;
+   background-color: #0072F5;
+   bottom: 0;
+   transition: 0.2s;
+}
+
+.nav.home::after {
+   transform: translateX(0px);
+}
+
+.nav.rooms::after {
+   transform: translateX(calc(85px + 2rem));
+}
+
+
+.nav.bookings::after {
+   transform: translateX(calc(170px + 4rem));
+}
+
+
+.link-container {
+   height: 100%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 85px;
+}
+
+.link {
+   text-decoration: none;
+   color: #000;
+   font-size: 1.2rem;
+   display: block;
+}
+
+.link:visited {
+   color: initial;
+}
+
+.link.active {
+   color: #0072F5;
+   font-weight: 500;
+}
+
+.avatar {
+   position: relative;
+   cursor: pointer;
+   background-color: #E6E8EB;
+   border-radius: 50%;
+   width: 2.8rem;
+   height: 2.8rem;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.avatar:hover {
+   outline: 1px solid #777;
+}

@@ -1,0 +1,10 @@
+.button-group {
+   display: flex;
+   gap: 3rem;
+   margin-bottom: 2rem;
+}
+
+.button:hover {
+   background-color: #CEE4FE;
+   color: #0876F5
+}

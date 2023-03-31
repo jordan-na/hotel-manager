@@ -1,0 +1,38 @@
+.search-details {
+   display: flex;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 1rem;
+   background-color: #F1F3F5;
+   border-radius: 1rem;
+   padding: 1rem;
+   margin-bottom: 1.75rem;
+}
+
+.search-item {
+   cursor: default;
+}
+
+.search-query {
+   text-transform: capitalize;
+   display: inline-block;
+   margin-right: 4px;
+}
+
+.close-button {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background: none;
+   border: none;
+   outline: none;
+   cursor: pointer;
+   color: #777;
+   transition: 0.1s;
+   color: #fff;
+   margin-right: 0.5rem;
+}
+
+.close-button:hover {
+   color: #0072f5;
+}

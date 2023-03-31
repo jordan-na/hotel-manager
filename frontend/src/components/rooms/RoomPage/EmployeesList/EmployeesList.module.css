@@ -1,0 +1,98 @@
+.card {
+   min-height: 405px;
+}
+
+.header {
+   height: 100%;
+   width: 100%;
+   padding: 1.5rem 1.5rem 1rem 1.5rem;
+}
+
+.title {
+   font-weight: 500;
+}
+
+.table {
+   position: relative;
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   height: 100%;
+}
+
+.columns {
+   display: grid;
+   grid-template-columns: 1fr 1fr 0.4fr;
+   border-bottom: 1px solid #d9d9d9;
+   padding: 0.25rem 0.5rem;
+   overflow: hidden;
+}
+
+.loading {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -30%);
+}
+
+.employees {
+   list-style: none;
+   max-height: 16.125rem;
+   overflow-y: auto;
+}
+
+.employees .employee {
+   display: grid;
+   grid-template-columns: 1fr 1fr 0.4fr;
+   padding: 0.25rem calc(0.5rem - 8px) 0.25rem 0.5rem;
+   column-gap: 8px;
+   width: 100%;
+}
+
+.employee.manager {
+   font-weight: bold;
+}
+
+.employee .no-overflow {
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   overflow: hidden;
+   white-space: nowrap;
+}
+
+.employees::-webkit-scrollbar {
+   width: 8px;
+}
+
+.employees::-webkit-scrollbar-track {
+   background: #ffffff;
+}
+
+.employees::-webkit-scrollbar-thumb {
+   background-color: #000000;
+   border-radius: 10px;
+   border: 3px solid #ffffff;
+}
+
+.footer {
+   padding: 0.65rem;
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.footer button {
+   border: none;
+   outline: none;
+   background: none;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer;
+   transition: 0.15s;
+}
+
+.footer button:hover {
+   transform: scale(1.03);
+}

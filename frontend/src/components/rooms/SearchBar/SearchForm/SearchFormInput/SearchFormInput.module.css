@@ -1,0 +1,157 @@
+.form-input {
+   padding: 0 1.5rem;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   cursor: pointer;
+   border-radius: 2rem;
+   position: relative;
+}
+
+.form-input:hover {
+   background-color: #F1F3F5;
+}
+
+.form-input::before {
+   content: "";
+   position: absolute;
+   display: none;
+   background-color: #fff;
+   left: -2px;
+   width: 2px;
+   height: 65%;
+   top: 50%;
+   transform: translateY(-50%);
+}
+
+.remove-border-on-hover:hover::before {
+   display: block;
+}
+
+.form-input label {
+   font-size: 0.9rem;
+   font-weight: 500;
+   cursor: inherit;
+}
+
+.form-input input {
+   border: none;
+   outline: none;
+   background: none;
+   font-size: 0.95rem;
+   font-weight: 500;
+}
+
+.form-input input::placeholder {
+   color: #aaa;
+}
+
+.border,
+.date-input,
+.dropdown-input {
+   position: relative;
+}
+
+.border::after {
+   content: "";
+   display: block;
+   position: absolute;
+   right: 0;
+   width: 2px;
+   height: 65%;
+   top: 50%;
+   transform: translateY(-50%);
+   background-color: #E6E8EB;
+}
+
+.remove-border-on-hover:hover::after {
+   display: none;
+}
+
+.divider {
+   background-color: #E6E8EB;
+   width: 2px;
+   height: 85%;
+   align-self: center;
+}
+
+.date-input input,
+.dropdown-input input {
+   cursor: pointer;
+   text-transform: capitalize;
+}
+
+.selected {
+   background-color: #fff;
+}
+
+.selected:hover {
+   background-color: #fff !important;
+}
+
+.error {
+   color: #ff0000 !important;
+}
+
+.disabled {
+   pointer-events: none;
+}
+
+.card {
+   position: absolute;
+   width: 100%;
+   background-color: #fff;
+   left: 50%;
+   top: 110%;
+   border-radius: 0.7rem;
+   border: 2px solid #E6E8EB;
+   transform: translateX(-50%) scale(0.9);
+   overflow: hidden;
+   opacity: 0;
+   transform-origin: top center;
+   transition: 0.15s;
+   pointer-events: none;
+}
+
+.card.show {
+   transform: translateX(-50%) scale(1);
+   opacity: 1;
+   pointer-events: all;
+}
+
+.dropdown-options {
+   list-style: none;
+}
+
+.option {
+   padding: 0.5rem 0.8rem;
+   text-transform: capitalize;
+   position: relative;
+}
+
+.option:hover {
+   background-color: #F1F3F5 !important;
+}
+
+.option::after {
+   position: absolute;
+   content: "";
+   display: none;
+   height: 0.6rem;
+   width: 0.6rem;
+   border-radius: 0.3rem;
+   background-color: #0072F5;
+   right: 0.5rem;
+   top: 50%;
+   transform: translateY(-50%);
+}
+
+.option.selected::after {
+   display: block;
+}
+
+.number-input input::-webkit-inner-spin-button,
+.number-input input::-webkit-outer-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+}

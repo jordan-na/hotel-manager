@@ -1,0 +1,7 @@
+.header {
+   margin: 3rem 0;
+}
+
+.header.less-margin-bottom {
+   margin-bottom: 1.25rem;
+}

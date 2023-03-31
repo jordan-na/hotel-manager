@@ -1,0 +1,7 @@
+.rooms-layout {
+   padding: 3.5rem 10rem;
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   flex-grow: 1;
+}
