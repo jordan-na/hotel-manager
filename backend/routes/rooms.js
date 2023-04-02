@@ -1,14 +1,18 @@
 import express from "express";
 import roomServices from "../services/room-services.js";
+import { formatDateForSQL } from "../utils/date-formatter.js";
 
 const roomsRouter = express.Router();
 
 roomsRouter.get("/", async (req, res) => {
    try {
-      console.log(req.query);
       let rooms;
       if(Object.keys(req.query).length > 0) {
-         rooms = await roomServices.getRoomsBySearchParams(req.query);
+         const query = {...req.query};
+         if(query["check-in"]) query["check-in"] = formatDateForSQL(query["check-in"]);
+         if(query["check-out"]) query["check-out"] = formatDateForSQL(query["check-out"]);
+         console.log(query);
+         rooms = await roomServices.getRoomsBySearchParams(query);
       } else {
          rooms = await roomServices.getRooms();
       }
@@ -24,6 +28,18 @@ roomsRouter.get("/:roomId", async (req, res) => {
       room.amenities = await roomServices.getAmenitiesByRoomId(req.params.roomId);
       room.issues = await roomServices.getIssuesByRoomId(req.params.roomId);
       res.json(room);
+   } catch(err) {
+      res.status(500).json({ message: err.message });
+   }
+});
+
+roomsRouter.get("/:roomId/availability", async (req, res) => {
+   try {
+      const roomId = req.params.roomId;
+      const checkInDate = formatDateForSQL(req.query["check-in"]);
+      const checkOutDate = formatDateForSQL(req.query["check-out"]);
+      const roomAvailability = await roomServices.getRoomAvailability(roomId, checkInDate, checkOutDate);
+      res.json(roomAvailability);
    } catch(err) {
       res.status(500).json({ message: err.message });
    }

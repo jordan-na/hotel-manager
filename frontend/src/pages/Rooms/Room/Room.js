@@ -53,7 +53,7 @@ const Room = () => {
          <img className={classes["hotel-image"]} src={room.hotelImage} alt="hotel" />
          <div className={classes["room-content"]}>
             <RoomDetails room={room} />
-            <BookingFormMini ref={formRef} />
+            <BookingFormMini ref={formRef} roomId={room.roomId} price={room.roomPrice} />
             <EmployeesList employees={employees} />
             <DetailsList title="Amenities" icon={<BiHappyBeaming size="1.8rem" />} list={room.amenities} />
             <DetailsList title="Issues" icon={<BiSad size="1.8rem" />} list={room.issues} />

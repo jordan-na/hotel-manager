@@ -15,6 +15,38 @@ export const getRoomsBySearchParamsQuery = (query) => {
          quin: 5
       };
       const cityQuery = query.city ? `AND UPPER(h.city) LIKE '%${query.city.toUpperCase()}%'` : "";
+      let dateQuery = "";
+      if(query["check-in"] && query["check-out"]) {
+         dateQuery = `AND r.roomId NOT IN (
+            SELECT Booking.roomId
+            FROM Booking
+            WHERE Booking.endDate >= '${query["check-in"]}' AND Booking.startDate <= '${query["check-out"]}' AND Booking.isActive = TRUE
+            UNION
+            SELECT Renting.roomId
+            FROM Renting
+            WHERE Renting.endDate >= '${query["check-in"]}' AND Renting.startDate <= '${query["check-out"]}' AND Renting.isActive = TRUE
+         )`;
+      } else if (query["check-in"]) {
+         dateQuery = `AND r.roomId NOT IN (
+               SELECT Booking.roomId
+               FROM Booking
+               WHERE Booking.endDate >= '${query["check-in"]}' AND Booking.startDate <= '${query["check-in"]}' AND Booking.isActive = TRUE
+               UNION
+               SELECT Renting.roomId
+               FROM Renting
+               WHERE Renting.endDate >= '${query["check-in"]}' AND Renting.startDate <= '${query["check-in"]}' AND Renting.isActive = TRUE
+            )`;
+      } else if (query["check-out"]) {
+         dateQuery = `AND r.roomId NOT IN (
+            SELECT Booking.roomId
+            FROM Booking
+            WHERE Booking.endDate >= '${query["check-out"]}' AND Booking.startDate <= '${query["check-out"]}' AND Booking.isActive = TRUE
+            UNION
+            SELECT Renting.roomId
+            FROM Renting
+            WHERE Renting.endDate >= '${query["check-out"]}' AND Renting.startDate <= '${query["check-out"]}' AND Renting.isActive = TRUE
+         )`;
+      }
       const capacityQuery = query.capacity ? `AND r.capacity = ${sizes[query.capacity.toLowerCase()]}` : "";
       const hotelChainQuery = query["hotel-chain"] ? `AND UPPER(hc.name) LIKE '%${query["hotel-chain"].toUpperCase()}%'` : "";
       const categoryQuery = query.category ? `AND h.category = '${query.category.charAt(0)}'` : "";
@@ -27,6 +59,7 @@ export const getRoomsBySearchParamsQuery = (query) => {
          WHERE r.hotelId = h.hotelId
          AND h.hotelChainId = hc.hotelChainId
          ${cityQuery}
+         ${dateQuery}
          ${capacityQuery}
          ${hotelChainQuery}
          ${categoryQuery}
@@ -38,7 +71,7 @@ export const getRoomsBySearchParamsQuery = (query) => {
 
 export const getRoomByIdQuery = (roomId) => {
    return (
-      `SELECT r.capacity as roomCapacity, r.price as roomPrice, r.view as roomView, r.extendable as roomIsExtendable,
+      `SELECT r.roomId, r.capacity as roomCapacity, r.price as roomPrice, r.view as roomView, r.extendable as roomIsExtendable,
       h.name AS hotelName, h.city as hotelCity, h.postalCode as hotelPostalCode, h.street as hotelStreet,
       h.email as hotelEmail, h.phoneNumber as hotelPhone, h.category as hotelCategory,
       h.numberOfRooms as hotelNumberOfRooms, h.image as hotelImage, hc.name as hotelChainName,
@@ -73,7 +106,33 @@ export const getAmenitiesByRoomIdQuery = (roomId) => {
 };
 
 export const getIssuesByRoomIdQuery = (roomId) => {
-   return `SELECT * FROM
+   return (
+      `SELECT * FROM
       Issue
-      WHERE roomId = '${roomId}'`;
+      WHERE roomId = '${roomId}'`
+   );
+};
+
+export const getRoomAvailabilityQuery = (roomId, checkInDate, checkOutDate) => {
+   return `SELECT
+      COUNT(*) = 0 AS roomAvailable,
+      DATEDIFF('${checkOutDate}', '${checkInDate}') AS numNights
+      FROM Room
+      LEFT JOIN Booking ON Room.roomId = Booking.roomId
+      LEFT JOIN Renting ON Room.roomId = Renting.roomId
+      WHERE Room.roomId = '${roomId}'
+      AND (Booking.isActive = TRUE OR Renting.isActive = TRUE)
+      AND (
+         (Booking.startDate <= '${checkInDate}' AND Booking.endDate >= '${checkInDate}')
+         OR (Booking.startDate <= '${checkOutDate}' AND Booking.endDate >= '${checkOutDate}')
+         OR (Booking.startDate >= '${checkInDate}' AND Booking.endDate <= '${checkOutDate}')
+         OR (Renting.startDate <= '${checkInDate}' AND Renting.endDate >= '${checkInDate}')
+         OR (Renting.startDate <= '${checkOutDate}' AND Renting.endDate >= '${checkOutDate}')
+         OR (Renting.startDate >= '${checkInDate}' AND Renting.endDate <= '${checkOutDate}')
+      )`;
+};
+
+export const insertBookingQuery = (booking) => {
+   return `INSERT INTO Booking (bookingId, startDate, endDate, isActive, roomId, customerId)
+      VALUES ('${booking.bookingId}', '${booking.startDate}', '${booking.endDate}', TRUE, '${booking.roomId}', '${booking.customerId}')`;
 };

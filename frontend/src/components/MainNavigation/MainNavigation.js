@@ -1,5 +1,4 @@
 import { Navbar, Text, Button } from "@nextui-org/react";
-import { Avatar } from "@nextui-org/react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import classes from './MainNavigation.module.css';
@@ -14,8 +13,8 @@ const MainNavigation = () => {
       selectedLinkClass = classes.home
    } else if (page === 'rooms') {
       selectedLinkClass = classes.rooms;
-   } else if (page === 'bookings') {
-      selectedLinkClass = classes.bookings;
+   } else if (page === 'reservations') {
+      selectedLinkClass = classes.reservations;
    }
 
    const getNavLinkClasses = ({isActive}) => {
@@ -42,8 +41,8 @@ const MainNavigation = () => {
                   </NavLink>
                </div>
                <div className={classes["link-container"]}>
-                  <NavLink className={getNavLinkClasses} to="/bookings">
-                     Bookings
+                  <NavLink className={getNavLinkClasses} to="/reservations">
+                     Reservations
                   </NavLink>
                </div>
             </nav>

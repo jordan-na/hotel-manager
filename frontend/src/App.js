@@ -1,13 +1,14 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, redirect, RouterProvider } from "react-router-dom";
 import RootLayout from "./layouts/Root/Root";
 import HomePage from "./pages/Home/Home";
 import RoomsLayout from "./layouts/Rooms/Rooms";
 import RoomsPage from "./pages/Rooms/Rooms";
 import RoomPage from "./pages/Rooms/Room/Room";
-import BookingsPage from "./pages/Bookings/Bookings";
+import ReservationsPage from "./pages/Reservations/Reservations";
 import {loader as slideshowLoader} from "./components/home/Slideshow/Slideshow";
 import { loader as roomsLoader } from "./pages/Rooms/Rooms";
 import {loader as roomLoader} from "./pages/Rooms/Room/Room";
+import { action as createBookingAction } from "./components/rooms/RoomPage/BookingFormMini/BookingFormMini";
 
 const router = createBrowserRouter([
    {
@@ -31,13 +32,24 @@ const router = createBrowserRouter([
                {
                   path: ":roomId",
                   element: <RoomPage />,
-                  loader: roomLoader
+                  loader: roomLoader,
+                  action: createBookingAction
                }
             ]
          },
          {
-            path: "bookings",
-            element: <BookingsPage />,
+            path: "reservations",
+            element: <ReservationsPage />,
+            children: [
+               {
+                  path: "bookings",
+                  element: <h1>Bookings</h1>
+               },
+               {
+                  path: "reservations",
+                  element: <h1>Reservations</h1>
+               }
+            ]
          },
       ],
    },

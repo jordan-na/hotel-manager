@@ -1,5 +1,5 @@
 import classes from "./BookingFormMini.module.css";
-import { Button, Card } from "@nextui-org/react";
+import { Button, Card, Loading } from "@nextui-org/react";
 import { useState, useRef, useEffect } from "react";
 import { validateDate } from "../../../../utils/validatation";
 import useInput from "../../../../hooks/use-input";
@@ -7,12 +7,15 @@ import useOutsideClick from "../../../../hooks/use-outside-click";
 import CalendarInput from "../../../UI/Calendar/CalendarInput";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import React from "react";
-import { useNavigation } from "react-router-dom";
+import roomServices from "../../../../services/room-services";
+import { redirect, useSubmit, useNavigation } from "react-router-dom";
+import bookingServices from "../../../../services/booking-services";
 
 const BookingFormMini = React.forwardRef((props, ref) => {
 
-   const [totalPrice, setTotalPrice] = useState();
+   const [totalPriceData, setTotalPriceData] = useState();
 
+   const [checkingIfDateIsAvailable, setCheckingIfDateIsAvailable] = useState(false);
    const [dateIsAvailable, setDateIsAvailable] = useState();
 
    const [formIsActive, setFormIsActive] = useState(false);
@@ -22,7 +25,10 @@ const BookingFormMini = React.forwardRef((props, ref) => {
    const [checkInDate, setCheckInDate] = useState(new Date());
    const [checkOutDate, setCheckOutDate] = useState(new Date());
 
+   const submit = useSubmit();
    const navigation = useNavigation();
+
+   const submitting = navigation.state === "submitting";
 
    const {
       value: checkInValue,
@@ -52,18 +58,33 @@ const BookingFormMini = React.forwardRef((props, ref) => {
          ? new Date(checkOutDateData[2], parseInt(checkOutDateData[1]) - 1, parseInt(checkOutDateData[0]) - 1)
          : null;
    const checkInDateData = checkInValue.split("/");
+   const today = new Date();
+   const tomorrow = new Date(today);
+   tomorrow.setDate(tomorrow.getDate() + 1);
    const checkOutMinDate =
       checkInValue.trim().length !== 0 && checkInIsValid
          ? new Date(checkInDateData[2], parseInt(checkInDateData[1]) - 1, parseInt(checkInDateData[0]) + 1)
-         : new Date();
+         : tomorrow;
 
    useEffect(() => {
-      if(formIsValid && formIsFull) {
-         // TODO: Check if dates are available by sendnig a request to the backend
-         // if they are available, set the total price and enable button
-         // if they are not available, disable button and show error message (replace title with error message)
-      }
-   }, [checkInValue, checkOutValue, formIsValid, formIsFull]);
+      (async () => {
+         if(formIsValid && formIsFull) {
+            // TODO: Check if dates are available by sendnig a request to the backend
+            setCheckingIfDateIsAvailable(true);
+            const data = await roomServices.getRoomAvailability(props.roomId, checkInValue, checkOutValue);
+            setDateIsAvailable(data.roomAvailable);
+            setCheckingIfDateIsAvailable(false);
+            if(data.roomAvailable) {
+               setTotalPriceData({
+                  numNights: data.numNights,
+                  price: data.numNights * props.price
+               });
+            }
+            // if they are available, set the total price and enable button
+            // if they are not available, disable button and show error message (replace title with error message)
+         }
+      })();
+   }, [checkInValue, checkOutValue, formIsValid, formIsFull, props.roomId, props.price]);
 
    const setFormIsActiveHandler = () => {
       setFormIsActive(true);
@@ -91,8 +112,9 @@ const BookingFormMini = React.forwardRef((props, ref) => {
    const formSubmissionHandler = (evt) => {
       evt.preventDefault();
       if(formIsValid) {
-         if (formIsFull) {
+         if (formIsFull && dateIsAvailable) {
             // TODO: Create an action to send a request to the backend to book the room, then redirect to the bookings page
+            submit(evt.currentTarget, {method: "post"})
          } else {
             setFormIsActive(true);
             if (checkInValue.trim().length === 0) {
@@ -104,10 +126,34 @@ const BookingFormMini = React.forwardRef((props, ref) => {
       }
    };
 
+   let headerContent;
+
+   if(submitting) {
+      headerContent = "Booking room...";
+   } else if (formIsFull && formIsValid && dateIsAvailable) {
+      headerContent = `Price for ${totalPriceData.numNights} night${totalPriceData.numNights > 1 ? "s" : ""}: $${totalPriceData.price.toFixed(2)}`;
+   } else if (formIsFull && formIsValid && !dateIsAvailable) {
+      headerContent = "Dates are not available";
+   } else {
+      headerContent = "Add dates for prices";
+   }
+
+   let buttonContent;
+
+   if(checkingIfDateIsAvailable || submitting) {
+      buttonContent = <Loading color="white" />;
+   } else if (!checkingIfDateIsAvailable && !dateIsAvailable && formIsFull && formIsValid) {
+      buttonContent = "Add different dates";
+   } else if (formIsFull && formIsValid && dateIsAvailable) {
+      buttonContent = "Book now";
+   } else {
+      buttonContent = "Check availability";
+   }
+
    return (
       <Card variant="bordered" className={classes.card} ref={ref}>
          <form className={classes.form} onSubmit={formSubmissionHandler}>
-            <h2>{totalPrice ? "" : "Add dates for prices"}</h2>
+            <h2>{headerContent}</h2>
             <div
                className={`${classes["date-pickers"]} ${formIsActive ? classes.active : ""}`}
                onClick={setFormIsActiveHandler}
@@ -125,9 +171,10 @@ const BookingFormMini = React.forwardRef((props, ref) => {
                      value={checkInValue}
                      onChange={checkInValueChangeHandler}
                      className={checkInIsValid ? "" : classes.invalid}
+                     name="check-in"
                      readOnly
                   />
-                  <button className={classes["clear-button"]} onClick={resetCheckInHandler} type="button" >
+                  <button className={classes["clear-button"]} onClick={resetCheckInHandler} type="button">
                      <AiOutlineCloseCircle size="1.3rem" />
                   </button>
                   <CalendarInput
@@ -139,7 +186,7 @@ const BookingFormMini = React.forwardRef((props, ref) => {
                      calendar={{
                         value: checkInDate,
                         minDate: new Date(),
-                        maxDate: checkInMaxDate
+                        maxDate: checkInMaxDate,
                      }}
                   />
                </div>
@@ -156,9 +203,10 @@ const BookingFormMini = React.forwardRef((props, ref) => {
                      value={checkOutValue}
                      onChange={checkOutValueChangeHandler}
                      className={checkOutIsValid ? "" : classes.invalid}
+                     name="check-out"
                      readOnly
                   />
-                  <button className={classes["clear-button"]} onClick={resetCheckOutHandler} type="button" >
+                  <button className={classes["clear-button"]} onClick={resetCheckOutHandler} type="button">
                      <AiOutlineCloseCircle size="1.3rem" />
                   </button>
                   <CalendarInput
@@ -170,22 +218,37 @@ const BookingFormMini = React.forwardRef((props, ref) => {
                      calendar={{
                         onChange: setCheckOutDate,
                         value: checkOutDate,
-                        minDate: checkOutMinDate
+                        minDate: checkOutMinDate,
                      }}
                   />
                </div>
             </div>
             <Button
-               className={`${classes.button} ${formIsValid ? "" : classes.invalid} ${
-                  formIsActive ? classes["no-click"] : ""
-               }`}
+               className={`${classes.button} ${formIsValid ? "" : classes.invalid}
+                  ${(formIsActive || checkingIfDateIsAvailable || submitting) ? classes["no-click"] : ""}`}
                type="submit"
             >
-               {formIsFull ? "Book Now" : "Check Availability"}
+               {buttonContent}
             </Button>
          </form>
       </Card>
    );
 });
+
+export const action = async ({request, params}) => {
+   const data = await request.formData();
+   const bookingData = {
+      startDate: data.get("check-in"),
+      endDate: data.get("check-out"),
+      roomId: params.roomId,
+      customerId: "01GW8XRBRKQG48KDE3NV66AFZN",
+   };
+   try {
+      await bookingServices.createNewBooking(bookingData);
+      return redirect("/bookings");
+   } catch(err) {
+      return {isError: true, message: err.message}
+   }
+};
 
 export default BookingFormMini;

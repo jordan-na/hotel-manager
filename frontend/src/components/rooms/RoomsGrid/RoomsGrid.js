@@ -27,9 +27,10 @@ const RoomsGrid = ({ rooms }) => {
       });
 
       return (
-         <div className={classes.grid}>
-            {roomCards}
-         </div>
+         <>
+            <h2 className={classes.header}>Showing {rooms.length} rooms</h2>
+            <div className={classes.grid}>{roomCards}</div>
+         </>
       );
    };
 

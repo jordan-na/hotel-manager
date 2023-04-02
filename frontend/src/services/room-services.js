@@ -19,12 +19,20 @@ const getRoomById = async (roomId) => {
    if(!response.ok) throw new Error("Error retrieving room");
    const data = await response.json();
    return data;
-}
+};
+
+const getRoomAvailability = async (roomId, checkIn, checkOut) => {
+   const response = await fetch(`${BASE_URL}/${roomId}/availability?check-in=${checkIn}&check-out=${checkOut}`);
+   if(!response.ok) throw new Error("Error retrieving room availability");
+   const data = await response.json();
+   return data;
+};
 
 const roomServices = {
    getRooms,
    getRoomsBySearchParams,
-   getRoomById
+   getRoomById,
+   getRoomAvailability
 };
 
 export default roomServices;

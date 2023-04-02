@@ -46,7 +46,7 @@
 }
 
 
-.nav.bookings::after {
+.nav.reservations::after {
    transform: translateX(calc(170px + 4rem));
 }
 
