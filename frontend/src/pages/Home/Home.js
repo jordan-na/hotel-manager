@@ -1,22 +1,21 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setPage } from "../../store/page/page-slice";
 import MainText from "../../components/home/MainText/MainText";
 import classes from "./Home.module.css";
 import ButtonGroup from "../../components/home/ButtonGroup/ButtonGroup";
 import Slideshow from "../../components/home/Slideshow/Slideshow";
 import { useLoaderData } from "react-router-dom";
 import HelpText from "../../components/home/HelpText/HelpText";
+import usePageSetter from "../../hooks/use-page-setter";
 
 const Home = () => {
 
-   const dispatch = useDispatch();
+   const { setCustomerPage } = usePageSetter();
 
    const pictureData = useLoaderData();
 
    useEffect(() => {
-      dispatch(setPage("home"));
-   }, [dispatch]);
+      setCustomerPage("home");
+   }, [setCustomerPage]);
 
    return (
       <div className={classes["home-page"]}>

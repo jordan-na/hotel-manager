@@ -5,7 +5,8 @@ import {
    getRoomByIdQuery,
    getAmenitiesByRoomIdQuery,
    getIssuesByRoomIdQuery,
-   getRoomAvailabilityQuery
+   getRoomAvailabilityQuery,
+   getRoomAvailabilityToUpdateQuery
 } from "../db/queries.js";
 
 const getRooms = async () => {
@@ -62,13 +63,23 @@ const getRoomAvailability = async (roomId, checkInDate, checkOutDate) => {
    });
 };
 
+const getRoomAvailabilityToUpdate = async (roomId, bookingId, checkInDate, checkOutDate) => {
+   return new Promise((resolve, reject) => {
+      db.query(getRoomAvailabilityToUpdateQuery(roomId, bookingId, checkInDate, checkOutDate), (error, results) => {
+         if (error) reject(error);
+         resolve(results[0]);
+      });
+   });
+}
+
 const roomServices = {
    getRooms,
    getRoomsBySearchParams,
    getRoomById,
    getAmenitiesByRoomId,
    getIssuesByRoomId,
-   getRoomAvailability
+   getRoomAvailability,
+   getRoomAvailabilityToUpdate
 };
 
 export default roomServices;

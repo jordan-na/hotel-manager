@@ -1,8 +1,7 @@
 import classes from "./Room.module.css";
 import { useLoaderData } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setPage } from "../../../store/page/page-slice";
+import usePageSetter from "../../../hooks/use-page-setter";
 import RoomHeader from "../../../components/rooms/RoomPage/RoomHeader/RoomHeader";
 import RoomDetails from "../../../components/rooms/RoomPage/RoomDetails/RoomDetails";
 import { useRef } from "react";
@@ -18,7 +17,7 @@ const Room = () => {
 
    const { room, employees } = useLoaderData();
 
-   const dispatch = useDispatch();
+   const { setCustomerPage } = usePageSetter();
 
    const formRef = useRef();
 
@@ -35,8 +34,8 @@ const Room = () => {
    }
 
    useEffect(() => {
-      dispatch(setPage("rooms"));
-   }, [dispatch]);
+      setCustomerPage("rooms");
+   }, [setCustomerPage]);
 
    useEffect(() => {
       document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -53,7 +52,7 @@ const Room = () => {
          <img className={classes["hotel-image"]} src={room.hotelImage} alt="hotel" />
          <div className={classes["room-content"]}>
             <RoomDetails room={room} />
-            <BookingFormMini ref={formRef} roomId={room.roomId} price={room.roomPrice} />
+            <BookingFormMini ref={formRef} roomId={room.roomId} roomPrice={room.roomPrice} />
             <EmployeesList employees={employees} />
             <DetailsList title="Amenities" icon={<BiHappyBeaming size="1.8rem" />} list={room.amenities} />
             <DetailsList title="Issues" icon={<BiSad size="1.8rem" />} list={room.issues} />

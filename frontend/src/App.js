@@ -1,14 +1,25 @@
-import { createBrowserRouter, redirect, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import RootLayout from "./layouts/Root/Root";
 import HomePage from "./pages/Home/Home";
 import RoomsLayout from "./layouts/Rooms/Rooms";
 import RoomsPage from "./pages/Rooms/Rooms";
 import RoomPage from "./pages/Rooms/Room/Room";
 import ReservationsPage from "./pages/Reservations/Reservations";
+import BookingsPage from "./pages/Reservations/Bookings/Bookings";
+import RentingsPage from "./pages/Reservations/Rentings/Rentings";
 import {loader as slideshowLoader} from "./components/home/Slideshow/Slideshow";
 import { loader as roomsLoader } from "./pages/Rooms/Rooms";
 import {loader as roomLoader} from "./pages/Rooms/Room/Room";
 import { action as createBookingAction } from "./components/rooms/RoomPage/BookingFormMini/BookingFormMini";
+import { loader as bookingsLoader } from "./pages/Reservations/Bookings/Bookings";
+import { loader as rentingsLoader } from "./pages/Reservations/Rentings/Rentings";
+import BookingDetails from "./components/reservations/BookingDetails/BookingDetails";
+import { loader as bookingDetailsLoader } from "./components/reservations/BookingDetails/BookingDetails";
+import RentingDetails from "./components/reservations/RentingDetails/RentingDetails";
+import { loader as rentingDetailsLoader } from "./components/reservations/RentingDetails/RentingDetails";
+import ProfilePage from "./pages/Profile/Profile";
+import { loader as profileLoader } from "./pages/Profile/Profile";
+import { action as updateBookingAction } from "./components/reservations/ReservationDetails/EditDatesForm/EditDatesForm";
 
 const router = createBrowserRouter([
    {
@@ -18,7 +29,7 @@ const router = createBrowserRouter([
          {
             index: true,
             element: <HomePage />,
-            loader: slideshowLoader
+            loader: slideshowLoader,
          },
          {
             path: "rooms",
@@ -27,29 +38,53 @@ const router = createBrowserRouter([
                {
                   index: true,
                   element: <RoomsPage />,
-                  loader: roomsLoader
+                  loader: roomsLoader,
                },
                {
                   path: ":roomId",
                   element: <RoomPage />,
                   loader: roomLoader,
-                  action: createBookingAction
-               }
-            ]
+                  action: createBookingAction,
+               },
+            ],
          },
          {
             path: "reservations",
             element: <ReservationsPage />,
             children: [
                {
-                  path: "bookings",
-                  element: <h1>Bookings</h1>
+                  path: "",
+                  element: <BookingsPage />,
+                  loader: bookingsLoader,
                },
                {
-                  path: "reservations",
-                  element: <h1>Reservations</h1>
-               }
-            ]
+                  path: ":bookingId",
+                  element: <BookingDetails />,
+                  loader: bookingDetailsLoader,
+                  action: updateBookingAction,
+               },
+               {
+                  path: "rentings",
+                  element: <Outlet />,
+                  children: [
+                     {
+                        path: "",
+                        element: <RentingsPage />,
+                        loader: rentingsLoader,
+                     },
+                     {
+                        path: ":rentingId",
+                        element: <RentingDetails />,
+                        loader: rentingDetailsLoader,
+                     },
+                  ],
+               },
+            ],
+         },
+         {
+            path: "profile",
+            element: <ProfilePage />,
+            loader: profileLoader,
          },
       ],
    },

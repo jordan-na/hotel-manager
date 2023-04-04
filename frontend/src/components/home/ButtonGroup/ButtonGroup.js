@@ -12,8 +12,8 @@ const ButtonGroup = () => {
       navigate("rooms");
    };
 
-   const goToBookingsPageHandler = () => {
-      navigate("bookings");
+   const goToReservationsPageHandler = () => {
+      navigate("reservations");
    };
 
    return (
@@ -21,8 +21,8 @@ const ButtonGroup = () => {
          <Button onPress={goToHotelsPageHandler} size="lg" icon={<FaHotel />} className={classes.button}>
             View Rooms
          </Button>
-         <Button onPress={goToBookingsPageHandler} size="lg" icon={<FaListAlt />} className={classes.button}>
-            View Bookings
+         <Button onPress={goToReservationsPageHandler} size="lg" icon={<FaListAlt />} className={classes.button}>
+            View Reservations
          </Button>
       </div>
    );

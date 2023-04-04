@@ -1,0 +1,103 @@
+.kebab {
+   position: absolute;
+}
+
+.kebab-button {
+   background: none;
+   border: none;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: space-between;
+   gap: 4px;
+   cursor: pointer;
+}
+
+.kebab-button div {
+   width: 5px;
+   height: 5px;
+   border-radius: 50%;
+}
+
+.kebab-button div {
+   background-color: #c3c8ce;
+}
+
+.kebab-button:hover div {
+   background-color: #6b6b77;
+}
+
+.menu {
+   list-style: none;
+   position: absolute;
+   right: 250%;
+   top: 50%;
+   width: max-content;
+   overflow: hidden;
+   visibility: hidden;
+   opacity: 0;
+   transform-origin: top right;
+   z-index: 1;
+   background-color: #F1F3F5;
+   color: #000;
+   border: 1px solid rgba(0, 0, 0, 0.15);
+   border-radius: 14px;
+}
+
+.menu.show {
+   animation: 0.15s showMenu linear forwards;
+}
+
+.menu.hide {
+   animation: 0.15s hideMenu linear forwards;
+   pointer-events: none;
+}
+
+@keyframes showMenu {
+   0% {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.8);
+   }
+   100% {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+   }
+}
+
+@keyframes hideMenu {
+   0% {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+   }
+   100% {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.8);
+   }
+}
+
+.menu-item {
+   padding: 10px;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
+
+.menu-item img {
+   width: 18px;
+   opacity: 0;
+   transition: opacity 0.15s;
+}
+
+.menu-item:hover {
+   background-color: #CEE4FE;
+   color: #0072f5;
+}
+
+.menu-item:hover img {
+   opacity: 1;
+}

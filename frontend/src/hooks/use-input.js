@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-const useInput = (validateInput) => {
-   const [enteredValue, setEnteredValue] = useState("");
+const useInput = (validateInput, initialValue) => {
+   const [enteredValue, setEnteredValue] = useState(initialValue || "");
 
    const valueIsValid = validateInput(enteredValue) || enteredValue.trim().length === 0;
 

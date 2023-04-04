@@ -3,15 +3,20 @@ import { createSlice } from "@reduxjs/toolkit";
 const pageSlice = createSlice({
    name: "page",
    initialState: {
-      page: "home"
+      customerPage: "home",
+      employeePage: "home"
    },
    reducers: {
-      setPage: (state, action) => {
-         state.page = action.payload;
+      setCustomerPage: (state, action) => {
+         state.customerPage = action.payload;
+      },
+      setEmployeePage: (state, action) => {
+         state.employeePage = action.payload;
       }
    }
 });
 
-export const setPage = pageSlice.actions.setPage;
+export const setCustomerPage = pageSlice.actions.setCustomerPage;
+export const setEmployeePage = pageSlice.actions.setEmployeePage;
 
 export default pageSlice.reducer;

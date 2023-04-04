@@ -10,8 +10,9 @@ import React from "react";
 import roomServices from "../../../../services/room-services";
 import { redirect, useSubmit, useNavigation } from "react-router-dom";
 import bookingServices from "../../../../services/booking-services";
+import { getUserId } from "../../../../hooks/use-user";
 
-const BookingFormMini = React.forwardRef((props, ref) => {
+const BookingFormMini = React.forwardRef(({ roomId, roomPrice }, ref) => {
 
    const [totalPriceData, setTotalPriceData] = useState();
 
@@ -69,22 +70,19 @@ const BookingFormMini = React.forwardRef((props, ref) => {
    useEffect(() => {
       (async () => {
          if(formIsValid && formIsFull) {
-            // TODO: Check if dates are available by sendnig a request to the backend
             setCheckingIfDateIsAvailable(true);
-            const data = await roomServices.getRoomAvailability(props.roomId, checkInValue, checkOutValue);
+            const data = await roomServices.getRoomAvailability(roomId, checkInValue, checkOutValue);
             setDateIsAvailable(data.roomAvailable);
             setCheckingIfDateIsAvailable(false);
             if(data.roomAvailable) {
                setTotalPriceData({
                   numNights: data.numNights,
-                  price: data.numNights * props.price
+                  price: data.numNights * roomPrice
                });
             }
-            // if they are available, set the total price and enable button
-            // if they are not available, disable button and show error message (replace title with error message)
          }
       })();
-   }, [checkInValue, checkOutValue, formIsValid, formIsFull, props.roomId, props.price]);
+   }, [checkInValue, checkOutValue, formIsValid, formIsFull, roomId, roomPrice]);
 
    const setFormIsActiveHandler = () => {
       setFormIsActive(true);
@@ -113,7 +111,6 @@ const BookingFormMini = React.forwardRef((props, ref) => {
       evt.preventDefault();
       if(formIsValid) {
          if (formIsFull && dateIsAvailable) {
-            // TODO: Create an action to send a request to the backend to book the room, then redirect to the bookings page
             submit(evt.currentTarget, {method: "post"})
          } else {
             setFormIsActive(true);
@@ -241,11 +238,11 @@ export const action = async ({request, params}) => {
       startDate: data.get("check-in"),
       endDate: data.get("check-out"),
       roomId: params.roomId,
-      customerId: "01GW8XRBRKQG48KDE3NV66AFZN",
+      customerId: getUserId(),
    };
    try {
       await bookingServices.createNewBooking(bookingData);
-      return redirect("/bookings");
+      return redirect("/reservations");
    } catch(err) {
       return {isError: true, message: err.message}
    }

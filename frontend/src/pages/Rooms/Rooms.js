@@ -1,6 +1,5 @@
-import { useDispatch } from "react-redux";
+import usePageSetter from "../../hooks/use-page-setter";
 import { useCallback, useEffect, useState } from "react";
-import { setPage } from "../../store/page/page-slice";
 import { Text } from "@nextui-org/react";
 import RoomsGrid from "../../components/rooms/RoomsGrid/RoomsGrid";
 import { useLoaderData } from "react-router-dom";
@@ -23,11 +22,11 @@ const Rooms = () => {
 
    const { searching, query, removeFromSearchParamsHandler } = useQuery(searchHandler);
 
-   const dispatch = useDispatch();
+   const { setCustomerPage } = usePageSetter();
 
    useEffect(() => {
-      dispatch(setPage("rooms"));
-   }, [dispatch]);
+      setCustomerPage("rooms")
+   }, [setCustomerPage]);
 
    return (
       <>

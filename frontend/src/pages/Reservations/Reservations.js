@@ -1,25 +1,23 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setPage } from "../../store/page/page-slice";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import classes from "./Reservations.module.css"
+import ReservationsNavigation from "../../components/reservations/ReservationsNavigation/ReservationsNavigation";
+import usePageSetter from "../../hooks/use-page-setter";
 
 const Reservations = () => {
-   const dispatch = useDispatch();
-   const navigate = useNavigate();
+   const { setCustomerPage } = usePageSetter();
 
    useEffect(() => {
-      dispatch(setPage("reservations"));
-   }, [dispatch]);
-
-   useEffect(() => {
-      navigate("bookings")
-   }, [navigate]);
+      setCustomerPage("reservations");
+   }, [setCustomerPage]);
 
    return (
-      <>
-         <h1>Reservations</h1>
-         <Outlet />
-      </>
+      <div className={classes["reservations-page"]}>
+         <ReservationsNavigation />
+         <div className={classes["list-container"]}>
+            <Outlet />
+         </div>
+      </div>
    );
 };
 

@@ -132,7 +132,113 @@ export const getRoomAvailabilityQuery = (roomId, checkInDate, checkOutDate) => {
       )`;
 };
 
+export const getRoomAvailabilityToUpdateQuery = (roomId, bookingId, checkInDate, checkOutDate) => {
+   return `SELECT
+   COUNT(*) = 0 AS roomAvailable,
+   DATEDIFF('${checkOutDate}', '${checkInDate}') AS numNights
+   FROM Room
+   LEFT JOIN Booking ON Room.roomId = Booking.roomId
+   LEFT JOIN Renting ON Room.roomId = Renting.roomId
+   WHERE Room.roomId = '${roomId}'
+   AND (Booking.isActive = TRUE OR Renting.isActive = TRUE)
+   AND NOT (Booking.bookingId = '${bookingId}')
+   AND (
+      (Booking.startDate <= '${checkInDate}' AND Booking.endDate >= '${checkInDate}')
+      OR (Booking.startDate <= '${checkOutDate}' AND Booking.endDate >= '${checkOutDate}')
+      OR (Booking.startDate >= '${checkInDate}' AND Booking.endDate <= '${checkOutDate}')
+      OR (Renting.startDate <= '${checkInDate}' AND Renting.endDate >= '${checkInDate}')
+      OR (Renting.startDate <= '${checkOutDate}' AND Renting.endDate >= '${checkOutDate}')
+      OR (Renting.startDate >= '${checkInDate}' AND Renting.endDate <= '${checkOutDate}')
+   )`;
+}
+
 export const insertBookingQuery = (booking) => {
    return `INSERT INTO Booking (bookingId, startDate, endDate, isActive, roomId, customerId)
       VALUES ('${booking.bookingId}', '${booking.startDate}', '${booking.endDate}', TRUE, '${booking.roomId}', '${booking.customerId}')`;
 };
+
+export const getBookingsQuery = () => {
+   return (
+      `SELECT h.name as hotelName, b.*, r.price as roomPrice, DATEDIFF(b.endDate, b.startDate) as numNights
+      FROM Hotel h, Booking b, Room r
+      WHERE b.roomId = r.roomId
+      AND r.hotelId = h.hotelId`
+   );
+};
+
+export const getBookingByIdQuery = (bookingId) => {
+   return (
+      `SELECT h.name as hotelName, h.city, h.street, h.postalCode, b.*, r.*,
+      DATEDIFF(b.endDate, b.startDate) as numNights,  c.fullName as customerName, hc.name as hotelChainName
+      FROM Hotel h, Booking b, Room r, Customer c, HotelChain hc
+      WHERE b.bookingId = '${bookingId}'
+      AND b.roomId = r.roomId
+      AND r.hotelId = h.hotelId
+      AND b.customerId = c.customerId
+      AND h.hotelChainId = hc.hotelChainId`
+   );
+};
+
+export const getBookingsByCustomerIdQuery = (customerId) => {
+   return (
+      `SELECT h.name as hotelName, b.*, r.price as roomPrice, DATEDIFF(b.endDate, b.startDate) as numNights
+      FROM Hotel h, Booking b, Room r
+      WHERE b.customerId = '${customerId}'
+      AND b.roomId = r.roomId
+      AND r.hotelId = h.hotelId`
+   );
+};
+
+export const deleteBookingsByIdsQuery = (bookingIds) => {
+   return (
+      `DELETE FROM Booking
+      WHERE bookingId IN ${bookingIds}`
+   );
+};
+
+export const updateBookingByIdQuery = (bookingId, startDate, endDate) => {
+   return (
+      `UPDATE Booking
+      SET startDate = '${startDate}', endDate = '${endDate}'
+      WHERE bookingId = '${bookingId}'`
+   );
+}
+
+export const getRentingsQuery = () => {
+   return (
+      `SELECT h.name as hotelName, re.*, r.price as roomPrice, DATEDIFF(re.endDate, re.startDate) as numNights
+      FROM Hotel h, Renting re, Room r
+      WHERE re.roomId = r.roomId
+      AND r.hotelId = h.hotelId`
+   );
+};
+
+export const getRentingByIdQuery = (rentingId) => {
+   return (
+      `SELECT h.name as hotelName, h.city, h.street, h.postalCode, re.*, r.*,
+      DATEDIFF(re.endDate, re.startDate) as numNights, c.fullName as customerName, hc.name as hotelChainName
+      FROM Hotel h, Renting re, Room r, Customer c, HotelChain hc
+      WHERE re.rentingId = '${rentingId}'
+      AND re.roomId = r.roomId
+      AND r.hotelId = h.hotelId
+      AND re.customerId = c.customerId
+      AND h.hotelChainId = hc.hotelChainId`
+   );
+}
+
+export const getRentingsByCustomerIdQuery = (customerId) => {
+   return (
+      `SELECT h.name as hotelName, re.*, r.price as roomPrice, DATEDIFF(re.endDate, re.startDate) as numNights
+      FROM Hotel h, Renting re, Room r
+      WHERE re.customerId = '${customerId}'
+      AND re.roomId = r.roomId
+      AND r.hotelId = h.hotelId`
+   );
+}
+
+export const deleteRentingsByIdsQuery = (rentingIds) => {
+   return (
+      `DELETE FROM Renting
+      WHERE rentingId IN ${rentingIds}`
+   );
+}

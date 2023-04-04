@@ -66,6 +66,10 @@
    display: block;
 }
 
+.link:hover {
+   color: #0072F5 !important;
+}
+
 .link:visited {
    color: initial;
 }

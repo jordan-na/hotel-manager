@@ -122,6 +122,7 @@ const SearchForm = ({ isActive, isInView, onClick, unFocus, remove }) => {
 
    const formSubmissionHandler = (evt) => {
       if(!formIsValid) return;
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
       submit(null, {action: "/rooms", method: "get"});
       remove();
    };

@@ -1,0 +1,46 @@
+.navbar {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding: 1rem 2rem;
+   border: 1px solid rgba(0, 0, 0, 0.15);
+   border-radius: 14px;
+   gap: 2.5rem;
+   width: min-content;
+}
+
+.link {
+   text-decoration: none;
+   color: #000;
+   font-size: 1.2rem;
+   position: relative;
+}
+
+.link:hover {
+   color: #0072F5 !important;
+}
+
+.link:visited {
+   color: initial;
+}
+
+.link::after {
+   content: "";
+   display: none;
+   width: calc(100% + 28px);
+   height: calc(100% + 12px);
+   position: absolute;
+   background: #CEE4FE;
+   border-radius: 10px;
+}
+
+.link.active {
+   color: #0072F5;
+}
+
+.link.active::after {
+   display: block;
+   top: -6px;
+   left: -14px;
+   z-index: -2;
+}

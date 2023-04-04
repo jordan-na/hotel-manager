@@ -11,7 +11,6 @@ roomsRouter.get("/", async (req, res) => {
          const query = {...req.query};
          if(query["check-in"]) query["check-in"] = formatDateForSQL(query["check-in"]);
          if(query["check-out"]) query["check-out"] = formatDateForSQL(query["check-out"]);
-         console.log(query);
          rooms = await roomServices.getRoomsBySearchParams(query);
       } else {
          rooms = await roomServices.getRooms();
@@ -36,9 +35,15 @@ roomsRouter.get("/:roomId", async (req, res) => {
 roomsRouter.get("/:roomId/availability", async (req, res) => {
    try {
       const roomId = req.params.roomId;
+      const bookingId = req.query.bookingId;
       const checkInDate = formatDateForSQL(req.query["check-in"]);
       const checkOutDate = formatDateForSQL(req.query["check-out"]);
-      const roomAvailability = await roomServices.getRoomAvailability(roomId, checkInDate, checkOutDate);
+      let roomAvailability;
+      if(bookingId) {
+         roomAvailability = await roomServices.getRoomAvailabilityToUpdate(roomId, bookingId, checkInDate, checkOutDate);
+      } else {
+         roomAvailability = await roomServices.getRoomAvailability(roomId, checkInDate, checkOutDate);
+      }
       res.json(roomAvailability);
    } catch(err) {
       res.status(500).json({ message: err.message });

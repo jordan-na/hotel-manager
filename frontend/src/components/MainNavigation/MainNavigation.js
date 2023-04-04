@@ -1,19 +1,19 @@
 import { Navbar, Text, Button } from "@nextui-org/react";
-import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import classes from './MainNavigation.module.css';
+import usePageSetter from "../../hooks/use-page-setter";
 
 const MainNavigation = () => {
 
-   const page = useSelector(state => state.page.page);
+   const { customerPage } = usePageSetter();
 
    let selectedLinkClass;
 
-   if(page === 'home') {
+   if(customerPage === 'home') {
       selectedLinkClass = classes.home
-   } else if (page === 'rooms') {
+   } else if (customerPage === 'rooms') {
       selectedLinkClass = classes.rooms;
-   } else if (page === 'reservations') {
+   } else if (customerPage === 'reservations') {
       selectedLinkClass = classes.reservations;
    }
 
