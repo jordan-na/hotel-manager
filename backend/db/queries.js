@@ -241,4 +241,24 @@ export const deleteRentingsByIdsQuery = (rentingIds) => {
       `DELETE FROM Renting
       WHERE rentingId IN ${rentingIds}`
    );
-}
+};
+
+export const getAccountByUserIdQuery = (userId) => {
+   return (
+      `SELECT
+         COALESCE(Customer.fullName, Employee.fullName) AS fullName,
+         COALESCE(Customer.SSN, Employee.SSN) AS SSN,
+         COALESCE(Customer.age, Employee.age) AS age,
+         COALESCE(Customer.street, Employee.street) AS street,
+         COALESCE(Customer.city, Employee.city) AS city,
+         COALESCE(Customer.postalCode, Employee.postalCode) AS postalCode,
+         Customer.registrationDate,
+         Account.email,
+         Account.password,
+         Account.accountType
+      FROM Account
+      LEFT JOIN Customer ON Account.userId = Customer.customerId
+      LEFT JOIN Employee ON Account.userId = Employee.employeeId
+      WHERE Account.userId = '${userId}'`
+   );
+};

@@ -50,6 +50,9 @@
    transform: translateX(calc(170px + 4rem));
 }
 
+.nav.profile::after {
+   display: none;
+}
 
 .link-container {
    height: 100%;
@@ -89,8 +92,13 @@
    display: flex;
    align-items: center;
    justify-content: center;
+   text-transform: uppercase;
 }
 
 .avatar:hover {
-   outline: 1px solid #777;
+   outline: 2px solid #0072F5;
+}
+
+.active .avatar {
+   outline: 2px solid #0072F5;
 }

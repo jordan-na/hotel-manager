@@ -15,6 +15,8 @@ const MainNavigation = () => {
       selectedLinkClass = classes.rooms;
    } else if (customerPage === 'reservations') {
       selectedLinkClass = classes.reservations;
+   } else if (customerPage === 'profile') {
+      selectedLinkClass = classes.profile;
    }
 
    const getNavLinkClasses = ({isActive}) => {
@@ -54,9 +56,11 @@ const MainNavigation = () => {
                </Button>
             </Navbar.Item>
             <Navbar.Item>
-               <div className={classes.avatar}>
-                  user
-               </div>
+               <NavLink className={getNavLinkClasses} to="/profile">
+                  <div className={classes.avatar}>
+                     OW
+                  </div>
+               </NavLink>
             </Navbar.Item>
          </Navbar.Content>
       </Navbar>
