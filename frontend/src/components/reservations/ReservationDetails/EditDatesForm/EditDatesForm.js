@@ -10,6 +10,7 @@ import React from "react";
 import roomServices from "../../../../services/room-services";
 import { redirect, useSubmit, useNavigation } from "react-router-dom";
 import bookingServices from "../../../../services/booking-services";
+import { formatDateForSQL, getTomorrow } from "../../../../utils/date-formatter";
 
 const EditDatesForm = ({ roomId, bookingId, onCancel, roomPrice, initialCheckIn, initialCheckOut }) => {
    const [totalPriceData, setTotalPriceData] = useState();
@@ -21,8 +22,12 @@ const EditDatesForm = ({ roomId, bookingId, onCancel, roomPrice, initialCheckIn,
 
    const [selectedInput, setSelectedInput] = useState();
 
-   const [checkInDate, setCheckInDate] = useState(new Date());
-   const [checkOutDate, setCheckOutDate] = useState(new Date());
+
+
+   // console.log(formatDateForSQL(initialCheckIn), formatDateForSQL(initialCheckOut));
+
+   const [checkInDate, setCheckInDate] = useState(getTomorrow(new Date(formatDateForSQL(initialCheckIn))));
+   const [checkOutDate, setCheckOutDate] = useState(getTomorrow(new Date(formatDateForSQL(initialCheckOut))));
 
    const submit = useSubmit();
    const navigation = useNavigation();
