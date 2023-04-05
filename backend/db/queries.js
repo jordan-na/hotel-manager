@@ -51,7 +51,7 @@ export const getRoomsBySearchParamsQuery = (query) => {
       const hotelChainQuery = query["hotel-chain"] ? `AND UPPER(hc.name) LIKE '%${query["hotel-chain"].toUpperCase()}%'` : "";
       const categoryQuery = query.category ? `AND h.category = '${query.category.charAt(0)}'` : "";
       const numberOfRoomsQuery = query["number-of-rooms"] ? `AND h.numberOfRooms = ${query["number-of-rooms"]}` : "";
-      const price = query.price ? `AND r.price <= ${query.price}` : "";
+      const price = query.price ? `AND ${parseFloat(query.price) - 100} <= r.price AND r.price <= ${parseFloat(query.price) + 100}` : "";
 
       return (
          `SELECT r.*, h.* FROM
