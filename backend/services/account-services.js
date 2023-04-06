@@ -1,5 +1,5 @@
 import db from "../db/db.js";
-import { getAccountByUserIdQuery } from "../db/queries.js";
+import { getAccountByUserIdQuery, updateAccountByUserIdQuery } from "../db/queries.js";
 
 const getAccountByUserId = (userId) => {
    return new Promise((resolve, reject) => {
@@ -10,8 +10,21 @@ const getAccountByUserId = (userId) => {
    });
 };
 
+const updateAccountByUserId = (userId, account) => {
+   return new Promise((resolve, reject) => {
+      db.query(updateAccountByUserIdQuery(userId, account), (error, results) => {
+         if (error) {
+            console.log(error);
+            reject(error)
+         };
+         resolve(results);
+      });
+   });
+};
+
 const accountServices = {
-   getAccountByUserId
+   getAccountByUserId,
+   updateAccountByUserId
 };
 
 export default accountServices;

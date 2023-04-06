@@ -262,3 +262,40 @@ export const getAccountByUserIdQuery = (userId) => {
       WHERE Account.userId = '${userId}'`
    );
 };
+
+export const updateAccountByUserIdQuery = (userId, account) => {
+   return `
+      UPDATE Customer, Account
+      SET
+         Customer.fullName = '${account.fullName}',
+         Customer.SSN = ${account.SSN},
+         Customer.age = ${account.age},
+         Customer.street = '${account.street}',
+         Customer.city = '${account.city}',
+         Customer.postalCode = '${account.postalCode}'
+      WHERE
+         Customer.customerId = Account.userId
+         AND Account.userId = '${userId}'
+         AND Account.accountType = 'Customer';
+
+      UPDATE Employee, Account
+      SET
+         Employee.fullName = '${account.fullName}',
+         Employee.SSN = ${account.SSN},
+         Employee.age = ${account.age},
+         Employee.street = '${account.street}',
+         Employee.city = '${account.city}',
+         Employee.postalCode = '${account.postalCode}'
+      WHERE
+         Employee.employeeId = Account.userId
+         AND Account.userId = '${userId}'
+         AND Account.accountType = 'Employee';
+
+      UPDATE Account
+      SET
+         email = '${account.email}',
+         password = '${account.password}'
+      WHERE
+         userId = '${userId}';
+      `;
+}
