@@ -299,3 +299,20 @@ export const updateAccountByUserIdQuery = (userId, account) => {
          userId = '${userId}';
       `;
 }
+
+export const emailExistsQuery = (email) => {
+   return `
+      SELECT COUNT(email) > 0 AS emailExists, accountType
+      FROM Account
+      WHERE email = '${email}'
+   `;
+}
+
+export const verifyPasswordQuery = (email, password) => {
+   return `
+      SELECT COUNT(email) > 0 AS passwordMatches
+      FROM Account
+      WHERE email = '${email}'
+      AND password = '${password}'
+   `;
+};

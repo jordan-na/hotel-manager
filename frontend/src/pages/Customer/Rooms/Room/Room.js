@@ -1,16 +1,16 @@
 import classes from "./Room.module.css";
 import { useLoaderData } from "react-router-dom";
 import { useEffect } from "react";
-import usePageSetter from "../../../hooks/use-page-setter";
-import RoomHeader from "../../../components/rooms/RoomPage/RoomHeader/RoomHeader";
-import RoomDetails from "../../../components/rooms/RoomPage/RoomDetails/RoomDetails";
+import usePageSetter from "../../../../hooks/use-page-setter";
+import RoomHeader from "../../../../components/rooms/RoomPage/RoomHeader/RoomHeader";
+import RoomDetails from "../../../../components/rooms/RoomPage/RoomDetails/RoomDetails";
 import { useRef } from "react";
-import BookingFormMini from "../../../components/rooms/RoomPage/BookingFormMini/BookingFormMini";
-import EmployeesList from "../../../components/rooms/RoomPage/EmployeesList/EmployeesList";
-import roomServices from "../../../services/room-services";
+import BookingFormMini from "../../../../components/rooms/RoomPage/BookingFormMini/BookingFormMini";
+import EmployeesList from "../../../../components/rooms/RoomPage/EmployeesList/EmployeesList";
+import roomServices from "../../../../services/room-services";
 import { defer } from "react-router-dom";
-import employeeServices from "../../../services/emplolyee-service";
-import DetailsList from "../../../components/rooms/RoomPage/DetailsList/DetailsList";
+import employeeServices from "../../../../services/emplolyee-service";
+import DetailsList from "../../../../components/rooms/RoomPage/DetailsList/DetailsList";
 import { BiHappyBeaming, BiSad } from "react-icons/bi";
 
 const Room = () => {

@@ -24,6 +24,26 @@ accountsRouter.patch("/:userId", async (req, res) => {
    } catch(err) {
       res.status(500).json({ message: err.message });
    }
-})
+});
+
+accountsRouter.get("/email-exists/:email", async (req, res) => {
+   try {
+      const emailExists = await accountServices.emailExists(req.params.email);
+      res.json(emailExists);
+   } catch(err) {
+      res.status(500).json({ message: err.message });
+   }
+});
+
+accountsRouter.get("/verify-password", async (req, res) => {
+   try {
+      const email = req.query.email;
+      const password = req.query.password;
+      const passwordExists = await accountServices.verifyPassword(email, password);
+      res.json(passwordExists);
+   } catch(err) {
+      res.status(500).json({ message: err.message });
+   }
+});
 
 export default accountsRouter;

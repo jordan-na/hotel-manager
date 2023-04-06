@@ -15,11 +15,18 @@ const updateAccountByUserId = async (userId, account) => {
       body: JSON.stringify(account)
    });
    return response;
+};
+
+export const emailExists = async (email) => {
+   const response = await fetch(`${BASE_URL}/email-exists/${email}`);
+   if(!response.ok) throw new Error("Error checking email");
+   return response.json();
 }
 
 const accountServices = {
    getAccountByUserId,
-   updateAccountByUserId
+   updateAccountByUserId,
+   emailExists
 };
 
 export default accountServices;

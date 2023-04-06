@@ -37,6 +37,27 @@ const ReservationItem = ({ item, isSelected, onSelect, onUnselect, onDelete, isE
       });
    };
 
+   const menuItems = [
+      {
+         name: "View",
+         onClick: navigateToModalHandler,
+         icon: <BsFullscreen size="1rem" />,
+      },
+      {
+         name: "Delete",
+         onClick: deleteItemHandler,
+         icon: <BsFillTrashFill size="1.1rem" />,
+      }
+   ];
+
+   if(item.isActive) {
+      menuItems.push({
+         name: "Edit",
+         onClick: showModalInEditModeHandler,
+         icon: <MdEdit size="1.1rem" />,
+      });
+   }
+
    return (
       <li className={classes.item} onClick={navigateToModalHandler}>
          {isEditable ? <button className={`${classes.checkbox} ${isSelected ? classes.checked : ""}`} onClick={toggleSelectedHandler}>
@@ -52,23 +73,7 @@ const ReservationItem = ({ item, isSelected, onSelect, onUnselect, onDelete, isE
          <div>{item.numNights}</div>
          {isEditable && <KebabMenu
             className={classes.kebab}
-            menu={[
-               {
-                  name: "View",
-                  onClick: navigateToModalHandler,
-                  icon: <BsFullscreen size="1rem" />,
-               },
-               {
-                  name: "Edit",
-                  onClick: showModalInEditModeHandler,
-                  icon: <MdEdit size="1.1rem" />,
-               },
-               {
-                  name: "Delete",
-                  onClick: deleteItemHandler,
-                  icon: <BsFillTrashFill size="1.1rem" />,
-               }
-            ]}
+            menu={menuItems}
          />}
       </li>
    );

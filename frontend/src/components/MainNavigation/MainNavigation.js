@@ -33,17 +33,17 @@ const MainNavigation = () => {
          <Navbar.Content hideIn="xs" activeColor="primary" variant="underline-rounded">
             <nav className={`${classes.nav} ${selectedLinkClass}`}>
                <div className={classes["link-container"]}>
-                  <NavLink className={getNavLinkClasses} to="/">
+                  <NavLink className={getNavLinkClasses} to="/customer" end>
                      Home
                   </NavLink>
                </div>
                <div className={classes["link-container"]}>
-                  <NavLink className={getNavLinkClasses} to="/rooms">
+                  <NavLink className={getNavLinkClasses} to="/customer/rooms">
                      Rooms
                   </NavLink>
                </div>
                <div className={classes["link-container"]}>
-                  <NavLink className={getNavLinkClasses} to="/reservations">
+                  <NavLink className={getNavLinkClasses} to="/customer/reservations">
                      Reservations
                   </NavLink>
                </div>
@@ -56,7 +56,7 @@ const MainNavigation = () => {
                </Button>
             </Navbar.Item>
             <Navbar.Item>
-               <NavLink className={getNavLinkClasses} to="/profile">
+               <NavLink className={getNavLinkClasses} to="/customer/profile">
                   <div className={classes.avatar}>
                      OW
                   </div>

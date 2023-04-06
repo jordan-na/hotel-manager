@@ -1,13 +1,13 @@
-import usePageSetter from "../../hooks/use-page-setter";
+import usePageSetter from "../../../hooks/use-page-setter";
 import { useCallback, useEffect, useState } from "react";
 import { Text } from "@nextui-org/react";
-import RoomsGrid from "../../components/rooms/RoomsGrid/RoomsGrid";
+import RoomsGrid from "../../../components/rooms/RoomsGrid/RoomsGrid";
 import { useLoaderData } from "react-router-dom";
 import classes from "./Rooms.module.css";
 import { defer } from "react-router-dom";
-import roomServices from "../../services/room-services";
-import SearchDetails from "../../components/rooms/SearchDetails/SearchDetails";
-import useQuery from "../../hooks/use-query";
+import roomServices from "../../../services/room-services";
+import SearchDetails from "../../../components/rooms/SearchDetails/SearchDetails";
+import useQuery from "../../../hooks/use-query";
 
 const Rooms = () => {
 

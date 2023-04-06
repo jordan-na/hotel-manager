@@ -1,10 +1,9 @@
-import ReservationsList from "../../../components/reservations/ReservationsList/ReservationsList";
-import { getUserId } from "../../../hooks/use-user";
-import rentingServices from "../../../services/renting-services";
+import ReservationsList from "../../../../components/reservations/ReservationsList/ReservationsList";
+import { getUserId } from "../../../../utils/use-user";
+import rentingServices from "../../../../services/renting-services";
 import { Outlet, useLoaderData } from "react-router-dom";
 
 const Rentings = () => {
-
    const rentings = useLoaderData();
 
    return (

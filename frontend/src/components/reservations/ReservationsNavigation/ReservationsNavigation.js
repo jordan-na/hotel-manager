@@ -17,8 +17,8 @@ const ReservationsNavigation = () => {
 
    return (
       <nav className={classes.navbar}>
-         <NavLink to="/reservations" end className={getBookingsLinkClasses}>Bookings</NavLink>
-         <NavLink to="/reservations/rentings" className={getRentingsLinkClasses}>Rentings</NavLink>
+         <NavLink to="/customer/reservations" end className={getBookingsLinkClasses}>Bookings</NavLink>
+         <NavLink to="/customer/reservations/rentings" className={getRentingsLinkClasses}>Rentings</NavLink>
       </nav>
    );
 };

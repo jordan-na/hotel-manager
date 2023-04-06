@@ -9,8 +9,8 @@ const BookingDetails = () => {
    return (
       <ReservationDetails
          reservation={booking}
-         editable
-         returnPoint="/reservations"
+         editable={booking.isActive ? true : false}
+         returnPoint="/customer/reservations"
          reservationType="Booking"
       />
    );

@@ -107,7 +107,7 @@ const ReservationDetails = ({ reservation, editable, returnPoint, reservationTyp
    }
 
    return (
-      <Modal open="true" onClose={closeModalHandler} width="600px" closeButton css={{overflow: "visible"}} blur>
+      <Modal open="true" onClose={closeModalHandler} width="700px" closeButton css={{overflow: "visible"}} blur>
          { !editMode && <Modal.Header>
             <Text size="x-large">{reservationType} Information:</Text>
          </Modal.Header>}

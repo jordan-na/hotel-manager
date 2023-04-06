@@ -1,0 +1,24 @@
+.form {
+   height: max-content;
+}
+
+.body {
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   height: 200px;
+}
+
+.body.sign-up {
+   height: 260px;
+}
+
+.signup-text {
+   cursor: pointer;
+   font-size: 14px;
+   color: #0072F5;
+}
+
+.signup-text:hover {
+   text-decoration: underline;
+}

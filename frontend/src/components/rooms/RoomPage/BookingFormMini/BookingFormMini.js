@@ -10,10 +10,9 @@ import React from "react";
 import roomServices from "../../../../services/room-services";
 import { redirect, useSubmit, useNavigation } from "react-router-dom";
 import bookingServices from "../../../../services/booking-services";
-import { getUserId } from "../../../../hooks/use-user";
+import { getUserId } from "../../../../utils/use-user";
 
 const BookingFormMini = React.forwardRef(({ roomId, roomPrice }, ref) => {
-
    const [totalPriceData, setTotalPriceData] = useState();
 
    const [checkingIfDateIsAvailable, setCheckingIfDateIsAvailable] = useState(false);
@@ -69,15 +68,15 @@ const BookingFormMini = React.forwardRef(({ roomId, roomPrice }, ref) => {
 
    useEffect(() => {
       (async () => {
-         if(formIsValid && formIsFull) {
+         if (formIsValid && formIsFull) {
             setCheckingIfDateIsAvailable(true);
             const data = await roomServices.getRoomAvailability(roomId, checkInValue, checkOutValue);
             setDateIsAvailable(data.roomAvailable);
             setCheckingIfDateIsAvailable(false);
-            if(data.roomAvailable) {
+            if (data.roomAvailable) {
                setTotalPriceData({
                   numNights: data.numNights,
-                  price: data.numNights * roomPrice
+                  price: data.numNights * roomPrice,
                });
             }
          }
@@ -109,9 +108,9 @@ const BookingFormMini = React.forwardRef(({ roomId, roomPrice }, ref) => {
 
    const formSubmissionHandler = (evt) => {
       evt.preventDefault();
-      if(formIsValid) {
+      if (formIsValid) {
          if (formIsFull && dateIsAvailable) {
-            submit(evt.currentTarget, {method: "post"})
+            submit(evt.currentTarget, { method: "post" });
          } else {
             setFormIsActive(true);
             if (checkInValue.trim().length === 0) {
@@ -125,10 +124,12 @@ const BookingFormMini = React.forwardRef(({ roomId, roomPrice }, ref) => {
 
    let headerContent;
 
-   if(submitting) {
+   if (submitting) {
       headerContent = "Booking room...";
    } else if (formIsFull && formIsValid && dateIsAvailable) {
-      headerContent = `Price for ${totalPriceData.numNights} night${totalPriceData.numNights > 1 ? "s" : ""}: $${totalPriceData.price.toFixed(2)}`;
+      headerContent = `Price for ${totalPriceData.numNights} night${
+         totalPriceData.numNights > 1 ? "s" : ""
+      }: $${totalPriceData.price.toFixed(2)}`;
    } else if (formIsFull && formIsValid && !dateIsAvailable) {
       headerContent = "Dates are not available";
    } else {
@@ -137,7 +138,7 @@ const BookingFormMini = React.forwardRef(({ roomId, roomPrice }, ref) => {
 
    let buttonContent;
 
-   if(checkingIfDateIsAvailable || submitting) {
+   if (checkingIfDateIsAvailable || submitting) {
       buttonContent = <Loading color="white" />;
    } else if (!checkingIfDateIsAvailable && !dateIsAvailable && formIsFull && formIsValid) {
       buttonContent = "Add different dates";
@@ -222,7 +223,7 @@ const BookingFormMini = React.forwardRef(({ roomId, roomPrice }, ref) => {
             </div>
             <Button
                className={`${classes.button} ${formIsValid ? "" : classes.invalid}
-                  ${(formIsActive || checkingIfDateIsAvailable || submitting) ? classes["no-click"] : ""}`}
+                  ${formIsActive || checkingIfDateIsAvailable || submitting ? classes["no-click"] : ""}`}
                type="submit"
             >
                {buttonContent}
@@ -232,7 +233,7 @@ const BookingFormMini = React.forwardRef(({ roomId, roomPrice }, ref) => {
    );
 });
 
-export const action = async ({request, params}) => {
+export const action = async ({ request, params }) => {
    const data = await request.formData();
    const bookingData = {
       startDate: data.get("check-in"),
@@ -242,9 +243,9 @@ export const action = async ({request, params}) => {
    };
    try {
       await bookingServices.createNewBooking(bookingData);
-      return redirect("/reservations");
-   } catch(err) {
-      return {isError: true, message: err.message}
+      return redirect("/customer/reservations");
+   } catch (err) {
+      return { isError: true, message: err.message };
    }
 };
 

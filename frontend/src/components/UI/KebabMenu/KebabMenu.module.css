@@ -87,6 +87,11 @@
    gap: 10px;
 }
 
+.menu-item.disabled {
+   pointer-events: none;
+   opacity: 0.2;
+}
+
 .menu-item img {
    width: 18px;
    opacity: 0;

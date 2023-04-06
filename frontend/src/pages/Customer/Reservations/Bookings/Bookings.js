@@ -1,10 +1,9 @@
 import { useLoaderData } from "react-router-dom";
-import bookingServices from "../../../services/booking-services";
-import ReservationsList from "../../../components/reservations/ReservationsList/ReservationsList";
-import { getUserId } from "../../../hooks/use-user";
+import bookingServices from "../../../../services/booking-services";
+import ReservationsList from "../../../../components/reservations/ReservationsList/ReservationsList";
+import { getUserId } from "../../../../utils/use-user";
 
 const Bookings = (props) => {
-
    const bookings = useLoaderData();
 
    return (

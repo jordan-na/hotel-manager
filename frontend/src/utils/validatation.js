@@ -38,3 +38,8 @@ export const validatePrice = (price) => {
    const regex = /^(0|[1-9]\d{0,3})(\.\d{1,2})?$/;
    return regex.test(price);
 };
+
+export const validateEmail = (email) => {
+   const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+   return regex.test(email);
+}

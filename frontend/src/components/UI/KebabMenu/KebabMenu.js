@@ -40,7 +40,7 @@ const KebabMenu = ({ menu, className }) => {
          <ul className={`${classes.menu} ${menuAnimation}`}>
             {menu.map((item) => (
                <li
-                  className={classes["menu-item"]}
+                  className={`${classes["menu-item"]} ${item.disabled ? classes["disabled"] : ""}`}
                   key={item.name}
                   onClick={(evt) => menuItemClickHandler(evt, item.onClick)}
                >

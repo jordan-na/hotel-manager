@@ -9,7 +9,7 @@ const RentingDetails = () => {
    return (
       <ReservationDetails
          reservation={renting}
-         returnPoint="/reservations/rentings"
+         returnPoint="/customer/reservations/rentings"
          reservationType="Renting"
       />
    );

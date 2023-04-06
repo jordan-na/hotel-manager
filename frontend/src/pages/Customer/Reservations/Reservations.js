@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import classes from "./Reservations.module.css"
-import ReservationsNavigation from "../../components/reservations/ReservationsNavigation/ReservationsNavigation";
-import usePageSetter from "../../hooks/use-page-setter";
+import ReservationsNavigation from "../../../components/reservations/ReservationsNavigation/ReservationsNavigation";
+import usePageSetter from "../../../hooks/use-page-setter";
 
 const Reservations = () => {
    const { setCustomerPage } = usePageSetter();

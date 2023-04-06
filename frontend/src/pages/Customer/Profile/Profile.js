@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
-import usePageSetter from "../../hooks/use-page-setter";
-import { getUserId } from "../../hooks/use-user";
-import accountServices from "../../services/account-services";
+import usePageSetter from "../../../hooks/use-page-setter";
+import { getUserId } from "../../../utils/use-user";
+import accountServices from "../../../services/account-services";
 import classes from "./Profile.module.css";
 import { Card, Button, Input } from "@nextui-org/react";
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
- import { ToastContainer, toast } from "react-toastify";
- import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Profile = () => {
    const [editMode, setEditMode] = useState(false);
@@ -57,9 +57,9 @@ const Profile = () => {
             city: cityRef.current.value,
             postalCode: postalCodeRef.current.value,
             email: emailRef.current.value,
-            password: passwordRef.current.value
+            password: passwordRef.current.value,
          });
-         if(response.status === 200) {
+         if (response.status === 200) {
             setFullNameValue(fullNameRef.current.value);
             setSsnValue(ssnRef.current.value);
             setAgeValue(ageRef.current.value);
@@ -73,7 +73,7 @@ const Profile = () => {
             const data = await response.json();
             throw new Error(data.message);
          }
-      } catch(err) {
+      } catch (err) {
          toast.error(err.message);
       }
    };

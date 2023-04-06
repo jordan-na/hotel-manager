@@ -1,48 +1,54 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import RootLayout from "./layouts/Root/Root";
-import HomePage from "./pages/Home/Home";
-import RoomsLayout from "./layouts/Rooms/Rooms";
-import RoomsPage from "./pages/Rooms/Rooms";
-import RoomPage from "./pages/Rooms/Room/Room";
-import ReservationsPage from "./pages/Reservations/Reservations";
-import BookingsPage from "./pages/Reservations/Bookings/Bookings";
-import RentingsPage from "./pages/Reservations/Rentings/Rentings";
+import AuthPage from "./pages/Auth/Auth";
+import CustomerRootLayout from "./layouts/Root/Root";
+import CustomerHomePage from "./pages/Customer/Home/Home";
+import CustomerRoomsLayout from "./layouts/Rooms/Rooms";
+import CustomerRoomsPage from "./pages/Customer/Rooms/Rooms";
+import CustomerRoomPage from "./pages/Customer/Rooms/Room/Room";
+import CustomerReservationsPage from "./pages/Customer/Reservations/Reservations";
+import CustomerBookingsPage from "./pages/Customer/Reservations/Bookings/Bookings";
+import CustomerRentingsPage from "./pages/Customer/Reservations/Rentings/Rentings";
 import {loader as slideshowLoader} from "./components/home/Slideshow/Slideshow";
-import { loader as roomsLoader } from "./pages/Rooms/Rooms";
-import {loader as roomLoader} from "./pages/Rooms/Room/Room";
+import { loader as roomsLoader } from "./pages/Customer/Rooms/Rooms";
+import {loader as roomLoader} from "./pages/Customer/Rooms/Room/Room";
 import { action as createBookingAction } from "./components/rooms/RoomPage/BookingFormMini/BookingFormMini";
-import { loader as bookingsLoader } from "./pages/Reservations/Bookings/Bookings";
-import { loader as rentingsLoader } from "./pages/Reservations/Rentings/Rentings";
-import BookingDetails from "./components/reservations/BookingDetails/BookingDetails";
+import { loader as bookingsLoader } from "./pages/Customer/Reservations/Bookings/Bookings";
+import { loader as rentingsLoader } from "./pages/Customer/Reservations/Rentings/Rentings";
+import CustomerBookingDetails from "./components/reservations/BookingDetails/BookingDetails";
 import { loader as bookingDetailsLoader } from "./components/reservations/BookingDetails/BookingDetails";
-import RentingDetails from "./components/reservations/RentingDetails/RentingDetails";
+import CustomerRentingDetails from "./components/reservations/RentingDetails/RentingDetails";
 import { loader as rentingDetailsLoader } from "./components/reservations/RentingDetails/RentingDetails";
-import ProfilePage from "./pages/Profile/Profile";
-import { loader as profileLoader } from "./pages/Profile/Profile";
+import CustomerProfilePage from "./pages/Customer/Profile/Profile";
+import { loader as profileLoader } from "./pages/Customer/Profile/Profile";
 import { action as updateBookingAction } from "./components/reservations/ReservationDetails/EditDatesForm/EditDatesForm";
 
 const router = createBrowserRouter([
    {
       path: "/",
-      element: <RootLayout />,
+      element: <AuthPage />,
+      loader: slideshowLoader,
+   },
+   {
+      path: "/customer",
+      element: <CustomerRootLayout />,
       children: [
          {
             index: true,
-            element: <HomePage />,
+            element: <CustomerHomePage />,
             loader: slideshowLoader,
          },
          {
             path: "rooms",
-            element: <RoomsLayout />,
+            element: <CustomerRoomsLayout />,
             children: [
                {
                   index: true,
-                  element: <RoomsPage />,
+                  element: <CustomerRoomsPage />,
                   loader: roomsLoader,
                },
                {
                   path: ":roomId",
-                  element: <RoomPage />,
+                  element: <CustomerRoomPage />,
                   loader: roomLoader,
                   action: createBookingAction,
                },
@@ -50,16 +56,16 @@ const router = createBrowserRouter([
          },
          {
             path: "reservations",
-            element: <ReservationsPage />,
+            element: <CustomerReservationsPage />,
             children: [
                {
                   path: "",
-                  element: <BookingsPage />,
+                  element: <CustomerBookingsPage />,
                   loader: bookingsLoader,
                },
                {
                   path: ":bookingId",
-                  element: <BookingDetails />,
+                  element: <CustomerBookingDetails />,
                   loader: bookingDetailsLoader,
                   action: updateBookingAction,
                },
@@ -69,12 +75,12 @@ const router = createBrowserRouter([
                   children: [
                      {
                         path: "",
-                        element: <RentingsPage />,
+                        element: <CustomerRentingsPage />,
                         loader: rentingsLoader,
                      },
                      {
                         path: ":rentingId",
-                        element: <RentingDetails />,
+                        element: <CustomerRentingDetails />,
                         loader: rentingDetailsLoader,
                      },
                   ],
@@ -83,7 +89,7 @@ const router = createBrowserRouter([
          },
          {
             path: "profile",
-            element: <ProfilePage />,
+            element: <CustomerProfilePage />,
             loader: profileLoader,
          },
       ],

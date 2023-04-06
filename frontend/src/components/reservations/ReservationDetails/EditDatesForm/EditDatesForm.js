@@ -257,7 +257,7 @@ export const action = async ({ request, params }) => {
    };
    try {
       await bookingServices.updateBookingById(bookingId, bookingData);
-      return redirect("/reservations");
+      return redirect("/customer/reservations");
    } catch (err) {
       return { isError: true, message: err.message };
    }
