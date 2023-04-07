@@ -160,8 +160,8 @@ const AuthCard = ({ handler, visible, closeHandler }) => {
       streetValue.trim().length > 0 &&
       cityValue.trim().length > 0 &&
       postalCodeValue.trim().length > 0 &&
-      hotelId &&
-      positionValue.trim().length > 0;
+      (accountType === "Employee" ? hotelId : true) &&
+      (accountType === "Employee" ? positionValue.trim().length > 0 : true);
 
    const formSubmissionHandler = (evt) => {
       evt.preventDefault();
@@ -402,7 +402,11 @@ export const signInAction = async (email, password) => {
    const { userId, accountType } = await accountServices.getAccountInfoByEmail(email);
    setUserId(userId);
    setAccountType(accountType);
-   return redirect(`/${accountType.toLowerCase()}`);
+   if (accountType === "Employee") {
+      return redirect("/employee/bookings");
+   } else {
+      return redirect(`/${accountType.toLowerCase()}`);
+   }
 };
 
 const signUpAction = async (account) => {
@@ -412,7 +416,11 @@ const signUpAction = async (account) => {
       if (response.status === 200) {
          setUserId(data.userId);
          setAccountType(account.accountType);
-         return redirect(`/${account.accountType.toLowerCase()}`);
+         if(account.accountType === "Employee") {
+            return redirect("/employee/bookings");
+         } else {
+            return redirect(`/${account.accountType.toLowerCase()}`);
+         }
       } else {
          throw new Error(data.message);
       }

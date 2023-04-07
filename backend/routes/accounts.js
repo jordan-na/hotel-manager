@@ -23,23 +23,22 @@ accountsRouter.post("/", async (req, res) => {
    }
 });
 
-accountsRouter.delete("/:userId", async (req, res) => {
+accountsRouter.get("/email-exists/:email", async (req, res) => {
    try {
-      const userId = req.params.userId;
-      await accountServices.deleteAccountByUserId(userId);
-      res.status(200).json({message: "Account deleted successfully"});
+      if (!validateEmail(req.params.email)) {
+         return res.json({ emailExists: false });
+      }
+      const emailExists = await accountServices.emailExists(req.params.email);
+      res.json(emailExists);
    } catch (err) {
       res.status(500).json({ message: err.message });
    }
 });
 
-accountsRouter.get("/email-exists/:email", async (req, res) => {
+accountsRouter.get("/customer-id/:email", async (req, res) => {
    try {
-      if(!validateEmail(req.params.email)) {
-         return res.json({ emailExists: false });
-      }
-      const emailExists = await accountServices.emailExists(req.params.email);
-      res.json(emailExists);
+      const customerId = await accountServices.getCustomerIdByEmail(req.params.email);
+      res.json({customerId});
    } catch (err) {
       res.status(500).json({ message: err.message });
    }
@@ -67,9 +66,19 @@ accountsRouter.get("/account-info/:email", async (req, res) => {
 
 accountsRouter.get("/:userId", async (req, res) => {
    try {
-      const account = await accountServices.getAccountByUserId(req.params.userId);
+      const account = await accountServices.getAccountByUserId(req.params.userId, req.query.accountType);
       res.json(account);
-   } catch(err) {
+   } catch (err) {
+      res.status(500).json({ message: err.message });
+   }
+});
+
+accountsRouter.delete("/:userId", async (req, res) => {
+   try {
+      const userId = req.params.userId;
+      await accountServices.deleteAccountByUserId(userId);
+      res.status(200).json({message: "Account deleted successfully"});
+   } catch (err) {
       res.status(500).json({ message: err.message });
    }
 });

@@ -6,12 +6,13 @@ import {
    verifyPasswordQuery,
    getAccountInfoByEmailQuery,
    createNewAccountQuery,
-   deleteAccountByUserIdQuery
+   deleteAccountByUserIdQuery,
+   getCustomerIdByEmailQuery,
 } from "../db/queries.js";
 
-const getAccountByUserId = (userId) => {
+const getAccountByUserId = (userId, accountType) => {
    return new Promise((resolve, reject) => {
-      db.query(getAccountByUserIdQuery(userId), (error, results) => {
+      db.query(getAccountByUserIdQuery(userId, accountType), (error, results) => {
          if (error) reject(error);
          resolve(results[0]);
       });
@@ -84,6 +85,17 @@ const deleteAccountByUserId = (userId) => {
    });
 };
 
+const getCustomerIdByEmail = (email) => {
+   return new Promise((resolve, reject) => {
+      db.query(getCustomerIdByEmailQuery(email), (error, results) => {
+         if (error) {
+            reject(error);
+         }
+         resolve(results[0]);
+      });
+   });
+}
+
 const accountServices = {
    getAccountByUserId,
    updateAccountByUserId,
@@ -91,7 +103,8 @@ const accountServices = {
    verifyPassword,
    getAccountInfoByEmail,
    createNewAccount,
-   deleteAccountByUserId
+   deleteAccountByUserId,
+   getCustomerIdByEmail
 };
 
 export default accountServices;

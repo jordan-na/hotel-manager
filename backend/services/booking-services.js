@@ -5,7 +5,9 @@ import {
    getBookingsByCustomerIdQuery,
    deleteBookingsByIdsQuery,
    getBookingByIdQuery,
-   updateBookingByIdQuery
+   updateBookingByIdQuery,
+   getBookingsByEmployeeIdQuery,
+   convertBookingsToRentingsByIdsQuery,
 } from "../db/queries.js";
 import { formatArrayForSql } from "../utils/array-formatter.js";
 
@@ -45,6 +47,15 @@ const getBookingsByCustomerId = async (customerId) => {
    });
 };
 
+export const getBookingsByEmployeeId = async (employeeId) => {
+   return new Promise((resolve, reject) => {
+      db.query(getBookingsByEmployeeIdQuery(employeeId), (error, results) => {
+         if (error) reject(error);
+         resolve(results);
+      });
+   });
+};
+
 const deleteBookingsByIds = async (bookingIds) => {
    return new Promise((resolve, reject) => {
       db.query(deleteBookingsByIdsQuery(formatArrayForSql(bookingIds)), (error, results) => {
@@ -63,13 +74,24 @@ const updateBookingById = async (bookingId, startDate, endDate) => {
    });
 };
 
+const convertBookingsToRentingsByIds = async (bookingIds) => {
+   return new Promise((resolve, reject) => {
+      db.query(convertBookingsToRentingsByIdsQuery(bookingIds), (error, results) => {
+         if (error) reject(error);
+         resolve(results);
+      });
+   });
+};
+
 const bookingServices = {
    createNewBooking,
    getBookings,
    getBookingById,
    getBookingsByCustomerId,
+   getBookingsByEmployeeId,
    deleteBookingsByIds,
    updateBookingById,
+   convertBookingsToRentingsByIds
 };
 
 export default bookingServices;

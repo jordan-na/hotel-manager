@@ -4,7 +4,7 @@ const pageSlice = createSlice({
    name: "page",
    initialState: {
       customerPage: "home",
-      employeePage: "home"
+      employeePage: "rentings"
    },
    reducers: {
       setCustomerPage: (state, action) => {

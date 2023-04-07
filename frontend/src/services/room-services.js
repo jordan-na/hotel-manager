@@ -33,14 +33,30 @@ const getRoomAvailabilityToUpdate = async (roomId, bookingId, checkIn, checkOut)
    if (!response.ok) throw new Error("Error retrieving room availability");
    const data = await response.json();
    return data;
-}
+};
+
+const getRoomsByEmployeeId = async (employeeId) => {
+   const response = await fetch(`${BASE_URL}/employee/${employeeId}`);
+   if(!response.ok) throw new Error("Error retrieving rooms");
+   const data = await response.json();
+   return data;
+};
+
+const getNumberOfRoomsPerArea = async () => {
+   const response = await fetch(`${BASE_URL}/number-of-rooms-per-area`);
+   if(!response.ok) throw new Error("Error retrieving rooms");
+   const data = await response.json();
+   return data;
+};
 
 const roomServices = {
    getRooms,
    getRoomsBySearchParams,
    getRoomById,
    getRoomAvailability,
-   getRoomAvailabilityToUpdate
+   getRoomAvailabilityToUpdate,
+   getRoomsByEmployeeId,
+   getNumberOfRoomsPerArea
 };
 
 export default roomServices;

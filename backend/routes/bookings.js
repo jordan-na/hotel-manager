@@ -23,13 +23,22 @@ bookingsRouter.get("/", async (req, res) => {
    try {
       if (req.query.customerId) {
          bookings = await bookingServices.getBookingsByCustomerId(req.query.customerId);
-      } else {
-         bookings = await bookingServices.getBookings();
+      } else if (req.query.employeeId) {
+         bookings = await bookingServices.getBookingsByEmployeeId(req.query.employeeId);
       }
    } catch(err) {
       res.status(500).json({ message: err.message });
    }
    res.json(bookings);
+});
+
+bookingsRouter.patch("/convert", async (req, res) => {
+   try {
+      await bookingServices.convertBookingsToRentingsByIds(req.body);
+      res.status(200).json({ message: "Bookings converted to rentings" });
+   } catch(err) {
+      res.status(500).json({ message: err.message });
+   }
 });
 
 bookingsRouter.get("/:bookingId", async (req, res) => {

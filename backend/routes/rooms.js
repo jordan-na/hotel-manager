@@ -21,6 +21,24 @@ roomsRouter.get("/", async (req, res) => {
    }
 });
 
+roomsRouter.get("/employee/:employeeId", async (req, res) => {
+   try {
+      const rooms = await roomServices.getRoomsByEmployeeId(req.params.employeeId);
+      res.json(rooms);
+   } catch(err) {
+      res.status(500).json({ message: err.message });
+   }
+});
+
+roomsRouter.get("/number-of-rooms-per-area", async (req, res) => {
+   try {
+      const data = await roomServices.getNumberOfRoomsPerArea();
+      res.json(data);
+   } catch(err) {
+      res.status(500).json({ message: err.message });
+   }
+});
+
 roomsRouter.get("/:roomId", async (req, res) => {
    try {
       const room = await roomServices.getRoomById(req.params.roomId);

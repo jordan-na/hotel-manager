@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import usePageSetter from "../../../hooks/use-page-setter";
-import { getUserId, logout } from "../../../utils/use-user";
+import { getAccountType, getUserId, logout } from "../../../utils/use-user";
 import accountServices from "../../../services/account-services";
 import classes from "./Profile.module.css";
 import { Card, Button, Input } from "@nextui-org/react";
@@ -14,9 +14,11 @@ import { useNavigate } from "react-router-dom";
 const Profile = () => {
    const [editMode, setEditMode] = useState(false);
 
-   const { setCustomerPage } = usePageSetter();
+   const { setCustomerPage, setEmployeePage } = usePageSetter();
 
    const account = useLoaderData();
+
+   console.log(account);
 
    const navigate = useNavigate();
 
@@ -40,7 +42,8 @@ const Profile = () => {
 
    useEffect(() => {
       setCustomerPage("profile");
-   }, [setCustomerPage]);
+      setEmployeePage("profile");
+   }, [setCustomerPage, setEmployeePage]);
 
    const turnOnEditModeHandler = () => {
       setEditMode(true);
@@ -231,8 +234,12 @@ const Profile = () => {
                   </div>
                   <div className={classes.info}>
                      <label>Account Type:</label>
-                     <div>Customer</div>
+                     <div>{account.accountType}</div>
                   </div>
+                  {account.positionTitle && <div className={classes.info}>
+                     <label>Employee Position:</label>
+                     <div>{account.positionTitle}</div>
+                  </div>}
                </div>
                {!editMode && (
                   <div className={classes["button-group"]}>
@@ -272,7 +279,7 @@ const Profile = () => {
 
 export const loader = async () => {
    try {
-      const account = accountServices.getAccountByUserId(getUserId());
+      const account = await accountServices.getAccountByUserId(getUserId(), getAccountType());
       return account;
    } catch (err) {
       return { isError: true, message: err.message };

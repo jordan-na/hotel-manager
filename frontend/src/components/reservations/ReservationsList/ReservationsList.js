@@ -29,6 +29,7 @@ const ReservationsList = ({ items, reservationType }) => {
    }
 
    const deleteItemsHandler = async (itemIds) => {
+      unselectAllItemsHandler();
       if(reservationType === "booking") {
          await bookingServices.deleteBookingsByIds(itemIds);
       } else if (reservationType === "renting") {

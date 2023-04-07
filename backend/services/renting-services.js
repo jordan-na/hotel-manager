@@ -1,6 +1,14 @@
 import db from "../db/db.js";
 import { formatArrayForSql } from "../utils/array-formatter.js";
-import { getRentingsQuery, getRentingsByCustomerIdQuery, deleteRentingsByIdsQuery, getRentingByIdQuery } from "../db/queries.js";
+import {
+   getRentingsQuery,
+   getRentingsByCustomerIdQuery,
+   deleteRentingsByIdsQuery,
+   getRentingByIdQuery,
+   getRentingsbyEmployeeIdQuery,
+   checkOutRentingsByIdsQuery,
+   createRentingQuery,
+} from "../db/queries.js";
 
 const getRentings = async () => {
    return new Promise((resolve, reject) => {
@@ -9,7 +17,7 @@ const getRentings = async () => {
          resolve(results);
       });
    });
-}
+};
 
 const getRentingById = async (rentingId) => {
    return new Promise((resolve, reject) => {
@@ -18,7 +26,7 @@ const getRentingById = async (rentingId) => {
          resolve(results[0]);
       });
    });
-}
+};
 
 const getRentingsByCustomerId = async (customerId) => {
    return new Promise((resolve, reject) => {
@@ -27,7 +35,16 @@ const getRentingsByCustomerId = async (customerId) => {
          resolve(results);
       });
    });
-}
+};
+
+const getRentingsByEmployeeId = async (employeeId) => {
+   return new Promise((resolve, reject) => {
+      db.query(getRentingsbyEmployeeIdQuery(employeeId), (error, results) => {
+         if (error) reject(error);
+         resolve(results);
+      });
+   });
+};
 
 const deleteRentingsByIds = async (rentingIds) => {
    return new Promise((resolve, reject) => {
@@ -36,14 +53,34 @@ const deleteRentingsByIds = async (rentingIds) => {
          resolve(results);
       });
    });
-}
+};
+
+const checkOutRentingsByIds = async (rentingIds) => {
+   return new Promise((resolve, reject) => {
+      db.query(checkOutRentingsByIdsQuery(formatArrayForSql(rentingIds)), (error, results) => {
+         if (error) reject(error);
+         resolve(results);
+      });
+   });
+};
+
+const createRenting = async (renting) => {
+   return new Promise((resolve, reject) => {
+      db.query(createRentingQuery(renting), (error, results) => {
+         if (error) reject(error);
+         resolve(results);
+      });
+   });
+};
 
 const rentingServices = {
    getRentings,
    getRentingById,
    getRentingsByCustomerId,
-   deleteRentingsByIds
+   getRentingsByEmployeeId,
+   deleteRentingsByIds,
+   checkOutRentingsByIds,
+   createRenting
 };
-
 
 export default rentingServices;

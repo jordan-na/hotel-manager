@@ -1,0 +1,52 @@
+.item {
+   display: grid;
+   grid-template-columns: 0.6fr 1.4fr 1fr 1fr 0.8fr 0.8fr 0.4fr;
+   border: 1px solid rgba(0, 0, 0, 0.15);
+   border-radius: 14px;
+   padding: 0.95rem 1.1rem;
+   position: relative;
+   cursor: pointer;
+   align-items: center;
+}
+
+.item:hover {
+   background-color: #F1F3F5;
+}
+
+.checkbox {
+   background: none;
+   outline: none;
+   width: 20px;
+   height: 20px;
+   border: 1px solid rgba(0, 0, 0, 0.4);
+   border-radius: 3px;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.checkbox:hover {
+   background-color: #fff;
+}
+
+.checkbox.checked {
+   background-color: #0072f5;
+   border: 1px solid #0072f5;
+}
+
+.checkbox.remove {
+   opacity: 0;
+   pointer-events: none;
+}
+
+.hotel-name {
+   color: #0072f5;
+}
+
+.kebab {
+   right: 1.1rem;
+   top: 50%;
+   transform: translateY(-50%);
+   z-index: 10;
+}

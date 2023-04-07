@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import SearchBar from "../../components/rooms/SearchBar/SearchBar";
+import SearchBar from "../../../components/rooms/SearchBar/SearchBar";
 import classes from "./Rooms.module.css";
 
 const Hotels = () => {

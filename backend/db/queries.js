@@ -1,3 +1,5 @@
+import { ulid } from "ulid";
+import { formatArrayForSql } from "../utils/array-formatter.js";
 import { getCurrentDateSqlFormat } from "../utils/date-formatter.js";
 
 export const getRoomsQuery= () => {
@@ -152,6 +154,16 @@ export const getRoomAvailabilityToUpdateQuery = (roomId, bookingId, checkInDate,
       OR (Renting.startDate <= '${checkOutDate}' AND Renting.endDate >= '${checkOutDate}')
       OR (Renting.startDate >= '${checkInDate}' AND Renting.endDate <= '${checkOutDate}')
    )`;
+};
+
+export const getRoomsByEmployeeIdQuery = (employeeId) => {
+   return (
+      `SELECT r.*, h.* FROM
+      Room r, Hotel h, Employee e
+      WHERE e.employeeId = '${employeeId}'
+      AND e.hotelId = r.hotelId
+      AND r.hotelId = h.hotelId`
+   );
 }
 
 export const insertBookingQuery = (booking) => {
@@ -191,6 +203,15 @@ export const getBookingsByCustomerIdQuery = (customerId) => {
    );
 };
 
+export const getBookingsByEmployeeIdQuery = (employeeId) => {
+   return `SELECT h.name as hotelName, b.*, r.price as roomPrice, DATEDIFF(b.endDate, b.startDate) as numNights
+      FROM Hotel h, Booking b, Room r, Employee e
+      WHERE e.employeeId = '${employeeId}'
+      AND e.hotelId = h.hotelId
+      AND b.roomId = r.roomId
+      AND r.hotelId = h.hotelId`;
+}
+
 export const deleteBookingsByIdsQuery = (bookingIds) => {
    return (
       `DELETE FROM Booking
@@ -204,7 +225,26 @@ export const updateBookingByIdQuery = (bookingId, startDate, endDate) => {
       SET startDate = '${startDate}', endDate = '${endDate}'
       WHERE bookingId = '${bookingId}'`
    );
-}
+};
+
+export const convertBookingsToRentingsByIdsQuery = (bookingIds) => {
+   let insertBookingQuery = '';
+
+   bookingIds.forEach((bookingId) => {
+      const rentingId = ulid();
+      insertBookingQuery += `INSERT INTO Renting (rentingId, startDate, endDate, isActive, roomId, customerId)
+      SELECT '${rentingId}', startDate, endDate, 1, roomId, customerId
+      FROM Booking
+      WHERE bookingId = '${bookingId}';`;
+   });
+
+   return `
+      UPDATE Booking
+      SET isActive = FALSE
+      WHERE bookingId IN ${formatArrayForSql(bookingIds)};
+      ${insertBookingQuery}
+      `;
+};
 
 export const getRentingsQuery = () => {
    return (
@@ -238,6 +278,17 @@ export const getRentingsByCustomerIdQuery = (customerId) => {
    );
 }
 
+export const getRentingsbyEmployeeIdQuery = (employeeId) => {
+   return (
+      `SELECT h.name as hotelName, re.*, r.price as roomPrice, DATEDIFF(re.endDate, re.startDate) as numNights
+      FROM Hotel h, Renting re, Room r, Employee e
+      WHERE e.employeeId = '${employeeId}'
+      AND e.hotelId = h.hotelId
+      AND re.roomId = r.roomId
+      AND r.hotelId = h.hotelId`
+   );
+}
+
 export const deleteRentingsByIdsQuery = (rentingIds) => {
    return (
       `DELETE FROM Renting
@@ -245,9 +296,24 @@ export const deleteRentingsByIdsQuery = (rentingIds) => {
    );
 };
 
-export const getAccountByUserIdQuery = (userId) => {
+export const checkOutRentingsByIdsQuery = (rentingIds) => {
    return (
-      `SELECT
+      `UPDATE Renting
+      SET isActive = FALSE
+      WHERE rentingId IN ${rentingIds}`
+   );
+};
+
+export const createRentingQuery = (renting) => {
+   return (
+      `INSERT INTO Renting (rentingId, startDate, endDate, isActive, roomId, customerId)
+      VALUES ('${renting.rentingId}', '${renting.startDate}', '${renting.endDate}', 1, '${renting.roomId}', '${renting.customerId}')`
+   );
+}
+
+export const getAccountByUserIdQuery = (userId, accountType) => {
+
+   return `(SELECT
          COALESCE(Customer.fullName, Employee.fullName) AS fullName,
          COALESCE(Customer.SSN, Employee.SSN) AS SSN,
          COALESCE(Customer.age, Employee.age) AS age,
@@ -257,12 +323,13 @@ export const getAccountByUserIdQuery = (userId) => {
          Customer.registrationDate,
          Account.email,
          Account.password,
-         Account.accountType
+         Account.accountType,
+         Position.positionTitle
       FROM Account
       LEFT JOIN Customer ON Account.userId = Customer.customerId
       LEFT JOIN Employee ON Account.userId = Employee.employeeId
-      WHERE Account.userId = '${userId}'`
-   );
+      LEFT JOIN Position ON Employee.employeeId = Position.employeeId
+      WHERE Account.userId = '${userId}')`;
 };
 
 export const updateAccountByUserIdQuery = (userId, account) => {
@@ -375,7 +442,19 @@ export const deleteAccountByUserIdQuery = (userId) => {
       DELETE FROM Employee
       WHERE employeeId = '${userId}';
 
+      DELETE FROM hotelmanagerdb.Position
+      WHERE employeeId = '${userId}';
+
       SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+   `;
+}
+
+export const getCustomerIdByEmailQuery = (email) => {
+   return `
+      SELECT userId as customerId
+      FROM Account
+      WHERE email = '${email}'
+      AND accountType = 'Customer'
    `;
 }
 
@@ -384,5 +463,32 @@ export const getHotelIdByNameQuery = (hotelName) => {
       SELECT hotelId
       FROM Hotel
       WHERE name = '${hotelName}'
+   `;
+}
+
+export const getHotelNameByEmployeeIdQuery = (employeeId) => {
+   return `
+      SELECT Hotel.name as hotelName
+      FROM Hotel, Employee
+      WHERE Employee.employeeId = '${employeeId}'
+      AND Employee.hotelId = Hotel.hotelId
+   `;
+}
+
+export const getNumberOfRoomsPerAreaQuery = () => {
+   return `
+      SELECT h.city as area, COUNT(r.roomId) as availableRooms
+      FROM Hotel h
+      LEFT JOIN Room r ON h.hotelId = r.hotelId
+      AND r.roomId NOT IN (
+         SELECT Booking.roomId
+         FROM Booking
+         WHERE Booking.isActive = TRUE
+         UNION
+         SELECT Renting.roomId
+         FROM Renting
+         WHERE Renting.isActive = TRUE
+      )
+      GROUP BY h.city;
    `;
 }

@@ -18,6 +18,12 @@ const getBookingsByCustomerId = async (customerId) => {
    return response.json();
 };
 
+const getBookingsByEmployeeId = async (employeeId) => {
+   const response = await fetch(`${BASE_URL}?employeeId=${employeeId}`);
+   if(!response.ok) throw new Error("Error getting bookings");
+   return response.json();
+}
+
 const deleteBookingsByIds = async (bookingIds) => {
    const response = await fetch(BASE_URL, {
       method: "DELETE",
@@ -46,14 +52,28 @@ const updateBookingById = async (bookingId, bookingData) => {
    });
    if(!response.ok) throw new Error("Error updating booking");
    return response;
+};
+
+const convertBookingsToRentingsByIds = async (bookingIds) => {
+   const response = await fetch(`${BASE_URL}/convert`, {
+      method: "PATCH",
+      headers: {
+         "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bookingIds),
+   });
+   if(!response.ok) throw new Error("Error converting bookings to rentings");
+   return response;
 }
 
 const bookingServices = {
    createNewBooking,
    getBookingsByCustomerId,
+   getBookingsByEmployeeId,
    deleteBookingsByIds,
    getBookingById,
-   updateBookingById
+   updateBookingById,
+   convertBookingsToRentingsByIds,
 };
 
 export default bookingServices;

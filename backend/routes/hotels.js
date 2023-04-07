@@ -13,4 +13,14 @@ hotelsRouter.get("/hotel-id/:hotelName", async (req, res) => {
    }
 });
 
+hotelsRouter.get("/hotel-name/:employeeId", async (req, res) => {
+   try {
+      const employeeId = req.params.employeeId;
+      const hotelName = await hotelServices.getHotelNameByEmployeeId(employeeId);
+      res.status(200).json({hotelName});
+   } catch (error) {
+      res.status(500).json({error: error.message});
+   }
+});
+
 export default hotelsRouter;

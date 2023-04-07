@@ -1,7 +1,7 @@
 const BASE_URL = "http://localhost:4000/accounts";
 
-const getAccountByUserId = async (userId) => {
-   const response = await fetch(`${BASE_URL}/${userId}`);
+const getAccountByUserId = async (userId, accountType) => {
+   const response = await fetch(`${BASE_URL}/${userId}?accountType=${accountType}`);
    if(!response.ok) throw new Error("Error getting account");
    return response.json();
 };
@@ -62,6 +62,12 @@ export const deleteAccountByUserId = async (userId) => {
    return response.json();
 };
 
+export const getCustomerIdByEmail = async (email) => {
+   const response = await fetch(`${BASE_URL}/customer-id/${email}`);
+   if(!response.ok) throw new Error("Error getting customer id");
+   return response.json();
+};
+
 const accountServices = {
    getAccountByUserId,
    updateAccountByUserId,
@@ -70,7 +76,8 @@ const accountServices = {
    verifyPassword,
    getAccountInfoByEmail,
    createNewAccount,
-   deleteAccountByUserId
+   deleteAccountByUserId,
+   getCustomerIdByEmail
 };
 
 export default accountServices;
