@@ -11,6 +11,10 @@ html, body {
    font-family: 'Inter', sans-serif;
 }
 
+body {
+   overflow-y: auto !important;
+}
+
 body::-webkit-scrollbar {
    width: 10px;
 }

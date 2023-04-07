@@ -36,6 +36,7 @@ const MainNavigation = () => {
    };
 
    useEffect(() => {
+      document.body.style.overflow = 'auto';
       (async () => {
          const initials = await accountServices.getAccountNameInitialsByUserId(getUserId());
          setInitials(initials);
