@@ -1,5 +1,6 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import AuthPage from "./pages/Auth/Auth";
+import { action as authAction } from "./components/AuthCard/AuthCard";
 import CustomerRootLayout from "./layouts/Root/Root";
 import CustomerHomePage from "./pages/Customer/Home/Home";
 import CustomerRoomsLayout from "./layouts/Rooms/Rooms";
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       path: "/",
       element: <AuthPage />,
       loader: slideshowLoader,
+      action: authAction
    },
    {
       path: "/customer",
@@ -94,6 +96,10 @@ const router = createBrowserRouter([
          },
       ],
    },
+   {
+      path: "/employee",
+      element: <h1>Employee</h1>
+   }
 ]);
 
 const App = () => {

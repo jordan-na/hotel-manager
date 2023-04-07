@@ -1,3 +1,5 @@
+import { getCurrentDateSqlFormat } from "../utils/date-formatter.js";
+
 export const getRoomsQuery= () => {
    return (
       `SELECT * FROM
@@ -310,9 +312,77 @@ export const emailExistsQuery = (email) => {
 
 export const verifyPasswordQuery = (email, password) => {
    return `
-      SELECT COUNT(email) > 0 AS passwordMatches
+      SELECT COUNT(email) > 0 AS passwordVerified
       FROM Account
       WHERE email = '${email}'
-      AND password = '${password}'
+      AND BINARY password = '${password}'
    `;
 };
+
+export const getAccountInfoByEmailQuery = (email) => {
+   return `
+      SELECT userId, accountType
+      FROM Account
+      WHERE email = '${email}'
+   `;
+};
+
+export const createNewAccountQuery = (account) => {
+
+   console.log(account);
+
+   let userInsertQuery;
+
+   if(account.accountType === 'Customer') {
+      userInsertQuery = `
+         INSERT INTO Customer (customerId, ssn, fullName, age, city, postalCode, street, registrationDate)
+         VALUES ('${account.userId}', ${account.ssn}, '${account.fullName}', ${account.age}, '${account.city}', '${account.postalCode}', '${account.street}', '${getCurrentDateSqlFormat()}');
+      `;
+   } else if(account.accountType === 'Employee') {
+      userInsertQuery = `
+         INSERT INTO Employee (employeeId, ssn, fullName, age, city, postalCode, street, hotelId)
+         VALUES ('${account.userId}', ${account.ssn}, '${account.fullName}', ${account.age}, '${account.city}', '${account.postalCode}', '${account.street}', '${account.hotelId}');
+
+         INSERT INTO hotelmanagerdb.Position (positionId, positionTitle, employeeId)
+         VALUES ('${account.positionId}', '${account.position}', '${account.userId}');
+      `;
+   }
+
+   return `
+      SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS;
+      SET FOREIGN_KEY_CHECKS=0;
+
+      ${userInsertQuery}
+
+      INSERT INTO Account (accountId, email, password, accountType, userId)
+      VALUES ('${account.accountId}', '${account.email}', '${account.password}', '${account.accountType}', '${account.userId}');
+
+      SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+   `;
+};
+
+export const deleteAccountByUserIdQuery = (userId) => {
+   return `
+      SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS;
+      SET FOREIGN_KEY_CHECKS=0;
+
+      DELETE FROM Account
+      WHERE userId = '${userId}';
+
+      DELETE FROM Customer
+      WHERE customerId = '${userId}';
+
+      DELETE FROM Employee
+      WHERE employeeId = '${userId}';
+
+      SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+   `;
+}
+
+export const getHotelIdByNameQuery = (hotelName) => {
+   return `
+      SELECT hotelId
+      FROM Hotel
+      WHERE name = '${hotelName}'
+   `;
+}

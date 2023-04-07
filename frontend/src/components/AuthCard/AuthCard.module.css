@@ -5,12 +5,13 @@
 .body {
    display: flex;
    flex-direction: column;
-   justify-content: space-between;
-   height: 200px;
+   gap: 30px;
 }
 
 .body.sign-up {
-   height: 260px;
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   row-gap: 30px;
 }
 
 .signup-text {

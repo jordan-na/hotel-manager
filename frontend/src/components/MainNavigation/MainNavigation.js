@@ -1,11 +1,18 @@
 import { Navbar, Text, Button } from "@nextui-org/react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import classes from './MainNavigation.module.css';
 import usePageSetter from "../../hooks/use-page-setter";
+import { getUserId, logout } from "../../utils/use-user";
+import { useEffect, useState } from "react";
+import accountServices from "../../services/account-services";
 
 const MainNavigation = () => {
 
+   const [initials, setInitials] = useState("");
+
    const { customerPage } = usePageSetter();
+
+   const navigate = useNavigate();
 
    let selectedLinkClass;
 
@@ -21,7 +28,19 @@ const MainNavigation = () => {
 
    const getNavLinkClasses = ({isActive}) => {
       return isActive ? `${classes.link} ${classes.active}` : `${classes.link}`;
-   }
+   };
+
+   const logoutHandler = () => {
+      logout();
+      navigate('/');
+   };
+
+   useEffect(() => {
+      (async () => {
+         const initials = await accountServices.getAccountNameInitialsByUserId(getUserId());
+         setInitials(initials);
+      })();
+   }, []);
 
    return (
       <Navbar variant="sticky" className={classes.navbar}>
@@ -51,14 +70,14 @@ const MainNavigation = () => {
          </Navbar.Content>
          <Navbar.Content>
             <Navbar.Item>
-               <Button auto flat>
+               <Button auto flat onPress={logoutHandler}>
                   Log Out
                </Button>
             </Navbar.Item>
             <Navbar.Item>
                <NavLink className={getNavLinkClasses} to="/customer/profile">
                   <div className={classes.avatar}>
-                     OW
+                     {initials}
                   </div>
                </NavLink>
             </Navbar.Item>

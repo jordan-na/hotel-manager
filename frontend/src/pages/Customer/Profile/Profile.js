@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import usePageSetter from "../../../hooks/use-page-setter";
-import { getUserId } from "../../../utils/use-user";
+import { getUserId, logout } from "../../../utils/use-user";
 import accountServices from "../../../services/account-services";
 import classes from "./Profile.module.css";
 import { Card, Button, Input } from "@nextui-org/react";
@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { formatDateFromSql } from "../../../utils/date-formatter";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
    const [editMode, setEditMode] = useState(false);
@@ -15,6 +17,8 @@ const Profile = () => {
    const { setCustomerPage } = usePageSetter();
 
    const account = useLoaderData();
+
+   const navigate = useNavigate();
 
    const [fullNameValue, setFullNameValue] = useState(account.fullName);
    const [ssnValue, setSsnValue] = useState(account.SSN);
@@ -44,6 +48,12 @@ const Profile = () => {
 
    const turnOffEditModeHandler = () => {
       setEditMode(false);
+   };
+
+   const deleteProfileHandler = async () => {
+      await accountServices.deleteAccountByUserId(getUserId());
+      logout();
+      navigate("/");
    };
 
    const submitHandler = async (evt) => {
@@ -185,7 +195,7 @@ const Profile = () => {
                   </div>
                   <div className={classes.info}>
                      <label>Registration Date:</label>
-                     <div>28/3/2023</div>
+                     <div>{formatDateFromSql(account.registrationDate)}</div>
                   </div>
                   <div className={classes.info}>
                      <label>Email:</label>
@@ -225,9 +235,14 @@ const Profile = () => {
                   </div>
                </div>
                {!editMode && (
-                  <Button onPress={turnOnEditModeHandler} className={classes["edit-button"]} type="button">
-                     Edit Profile
-                  </Button>
+                  <div className={classes["button-group"]}>
+                     <Button onPress={deleteProfileHandler} color="error">
+                        Delete Profile
+                     </Button>
+                     <Button onPress={turnOnEditModeHandler} className={classes["edit-button"]} type="button">
+                        Edit Profile
+                     </Button>
+                  </div>
                )}
                {editMode && (
                   <div className={classes["button-group"]}>

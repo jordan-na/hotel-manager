@@ -39,9 +39,9 @@ export const getUserId = () => {
    return localStorage.getItem("userId");
 };
 
-export const setUserId = () => {
-   localStorage.setItem("userId");
-}
+export const setUserId = (userId) => {
+   localStorage.setItem("userId", userId);
+};
 
 export const getAccountType = () => {
    return localStorage.getItem("accountType");
@@ -49,4 +49,9 @@ export const getAccountType = () => {
 
 export const setAccountType = (accountType) => {
    localStorage.setItem("accountType", accountType);
-}
+};
+
+export const logout = () => {
+   localStorage.removeItem("userId");
+   localStorage.removeItem("accountType");
+};

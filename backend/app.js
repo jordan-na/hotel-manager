@@ -5,6 +5,7 @@ import employeesRouter from './routes/employees.js';
 import bookingsRouter from './routes/bookings.js';
 import rentingsRouter from './routes/rentings.js';
 import accountsRouter from './routes/accounts.js';
+import hotelsRouter from './routes/hotels.js';
 
 const app = express();
 const port = 4000;
@@ -21,7 +22,8 @@ app.use("/rooms", roomsRouter);
 app.use("/employees", employeesRouter);
 app.use("/bookings", bookingsRouter);
 app.use("/rentings", rentingsRouter);
-app.use("/accounts", accountsRouter)
+app.use("/accounts", accountsRouter);
+app.use("/hotels", hotelsRouter);
 
 app.listen(4000, () => {
   console.log('Server is running on port ' + port);
