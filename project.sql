@@ -1,3 +1,8 @@
+--  Group 67
+-- Jordan Na [300166499]
+-- Jas Dhindsa [300245355]
+-- Omar Hamed [300229096]
+
 USE hotelmanagerdb;
 
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS; 
