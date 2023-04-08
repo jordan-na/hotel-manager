@@ -445,6 +445,12 @@ export const deleteAccountByUserIdQuery = (userId) => {
       DELETE FROM hotelmanagerdb.Position
       WHERE employeeId = '${userId}';
 
+      DELETE FROM Renting
+      WHERE customerId = '${userId}';
+
+      DELETE FROM Booking
+      WHERE customerId = '${userId}';
+
       SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
    `;
 }
