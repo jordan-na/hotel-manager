@@ -37,6 +37,10 @@ import { action as newRentingAction } from "./pages/Employee/NewRenting/NewRenti
 import ViewsPage from "./pages/Employee/Views/Views";
 import RoomsPerAreaPage from "./pages/Employee/Views/RoomsPerArea/RoomsPerAreaPage";
 import { loader as roomsPerAreaLoader } from "./pages/Employee/Views/RoomsPerArea/RoomsPerAreaPage";
+import ViewsHotelsPage from "./pages/Employee/Views/Hotels/Hotels";
+import { loader as viewsHotelsLoader } from "./pages/Employee/Views/Hotels/Hotels";
+import CapacityOfRoomsPage from "./pages/Employee/Views/CapacityOfRooms/CapacityOFRooms";
+import { loader as capacityOfRoomsLoader } from "./pages/Employee/Views/CapacityOfRooms/CapacityOFRooms";
 
 const router = createBrowserRouter([
    {
@@ -164,7 +168,13 @@ const router = createBrowserRouter([
          },
          {
             path: "views/hotels",
-            
+            element: <ViewsHotelsPage />,
+            loader: viewsHotelsLoader,
+         },
+         {
+            path: "views/hotels/:hotelId",
+            element: <CapacityOfRoomsPage />,
+            loader: capacityOfRoomsLoader,
          },
          {
             path: "profile",

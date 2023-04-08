@@ -39,6 +39,15 @@ roomsRouter.get("/number-of-rooms-per-area", async (req, res) => {
    }
 });
 
+roomsRouter.get("/capacity-of-rooms-by-hotel/:hotelId", async (req, res) => {
+   try {
+      const data = await roomServices.getCapacityOfRoomsByHotelId(req.params.hotelId);
+      res.json(data);
+   } catch(err) {
+      res.status(500).json({ message: err.message });
+   }
+});
+
 roomsRouter.get("/:roomId", async (req, res) => {
    try {
       const room = await roomServices.getRoomById(req.params.roomId);

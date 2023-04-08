@@ -1,0 +1,13 @@
+.back-btn {
+   position: absolute;
+   top: 5rem;
+   left: 5rem;
+}
+
+.hotels {
+   margin: 3rem auto;
+   list-style: none;
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+}

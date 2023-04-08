@@ -492,3 +492,18 @@ export const getNumberOfRoomsPerAreaQuery = () => {
       GROUP BY h.city;
    `;
 }
+
+export const getAllHotelNamesQuery = () => {
+   return `
+      SELECT hotelId, name
+      FROM Hotel
+   `;
+};
+
+export const getCapacityOfRoomsByHotelIdQuery = (hotelId) => {
+   return `
+      SELECT r.roomId, r.capacity
+      FROM Room r
+      WHERE r.hotelId = '${hotelId}'
+   `;
+}

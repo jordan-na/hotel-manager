@@ -23,4 +23,13 @@ hotelsRouter.get("/hotel-name/:employeeId", async (req, res) => {
    }
 });
 
+hotelsRouter.get("/all-hotel-names", async (req, res) => {
+   try {
+      const hotelNames = await hotelServices.getAllHotelNames();
+      res.status(200).json(hotelNames);
+   } catch (error) {
+      res.status(500).json({error: error.message});
+   }
+});
+
 export default hotelsRouter;

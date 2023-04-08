@@ -6,16 +6,22 @@ const getHotelIdByName = async (hotelName) => {
    return response.json();
 };
 
-
 const getHotelNameByEmployeeId = async (employeeId) => {
    const response = await fetch(`${BASE_URL}/hotel-name/${employeeId}`);
    if(!response.ok) throw new Error("Error getting hotel name");
    return response.json();
 };
 
+const getAllHotelNames = async () => {
+   const response = await fetch(`${BASE_URL}/all-hotel-names`);
+   if(!response.ok) throw new Error("Error getting all hotel names");
+   return response.json();
+};
+
 const hotelServices = {
    getHotelIdByName,
-   getHotelNameByEmployeeId
+   getHotelNameByEmployeeId,
+   getAllHotelNames
 };
 
 export default hotelServices;

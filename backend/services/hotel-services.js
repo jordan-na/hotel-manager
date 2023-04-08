@@ -1,5 +1,5 @@
 import db from "../db/db.js";
-import { getHotelIdByNameQuery, getHotelNameByEmployeeIdQuery } from "../db/queries.js";
+import { getHotelIdByNameQuery, getHotelNameByEmployeeIdQuery, getAllHotelNamesQuery } from "../db/queries.js";
 
 const getHotelIdByName = (hotelName) => {
    return new Promise((resolve, reject) => {
@@ -19,9 +19,19 @@ const getHotelNameByEmployeeId = (employeeId) => {
    });
 };
 
+const getAllHotelNames = () => {
+   return new Promise((resolve, reject) => {
+      db.query(getAllHotelNamesQuery(), (error, results) => {
+         if (error) reject(error);
+         resolve(results);
+      });
+   });
+};
+
 const hotelServices = {
    getHotelIdByName,
    getHotelNameByEmployeeId,
+   getAllHotelNames
 };
 
 export default hotelServices;

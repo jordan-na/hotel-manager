@@ -9,6 +9,7 @@ import {
    getRoomAvailabilityToUpdateQuery,
    getRoomsByEmployeeIdQuery,
    getNumberOfRoomsPerAreaQuery,
+   getCapacityOfRoomsByHotelIdQuery,
 } from "../db/queries.js";
 
 const getRooms = async () => {
@@ -92,6 +93,15 @@ const getNumberOfRoomsPerArea = () => {
    });
 };
 
+const getCapacityOfRoomsByHotelId = (hotelId) => {
+   return new Promise((resolve, reject) => {
+      db.query(getCapacityOfRoomsByHotelIdQuery(hotelId), (error, results) => {
+         if (error) reject(error);
+         resolve(results);
+      });
+   });
+};
+
 const roomServices = {
    getRooms,
    getRoomsBySearchParams,
@@ -101,7 +111,8 @@ const roomServices = {
    getRoomAvailability,
    getRoomAvailabilityToUpdate,
    getRoomsByEmployeeId,
-   getNumberOfRoomsPerArea
+   getNumberOfRoomsPerArea,
+   getCapacityOfRoomsByHotelId
 };
 
 export default roomServices;

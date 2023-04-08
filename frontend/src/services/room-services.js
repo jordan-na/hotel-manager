@@ -49,6 +49,13 @@ const getNumberOfRoomsPerArea = async () => {
    return data;
 };
 
+const getCapacityOfRoomsByHotelId = async (hotelId) => {
+   const response = await fetch(`${BASE_URL}/capacity-of-rooms-by-hotel/${hotelId}`);
+   if(!response.ok) throw new Error("Error retrieving rooms");
+   const data = await response.json();
+   return data;
+};
+
 const roomServices = {
    getRooms,
    getRoomsBySearchParams,
@@ -56,7 +63,8 @@ const roomServices = {
    getRoomAvailability,
    getRoomAvailabilityToUpdate,
    getRoomsByEmployeeId,
-   getNumberOfRoomsPerArea
+   getNumberOfRoomsPerArea,
+   getCapacityOfRoomsByHotelId,
 };
 
 export default roomServices;
